@@ -13,10 +13,18 @@
     "eject": "react-scripts eject"
   },
   "repository": {
-      "type": "git",
-      "url": "https://github.com/jayden-chan/ess-lockers"
+    "type": "git",
+    "url": "https://github.com/jayden-chan/ess-lockers"
   },
   "author": "Jayden Chan <jaydencn7@gmail.com> (https://github.com/jayden-chan/)",
   "contributors": [],
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-changed": "^3.2.0",
+    "gulp-clean-css": "^3.9.4",
+    "gulp-rename": "^1.2.3",
+    "gulp-sass": "^4.0.1",
+    "gulp-uglify": "^3.0.0"
+  }
 }
