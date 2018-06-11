@@ -1,7 +1,6 @@
 {
   "name": "ess-lockers",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
@@ -13,4 +12,11 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/jayden-chan/ess-lockers"
+  },
+  "author": "Jayden Chan <jaydencn7@gmail.com> (https://github.com/jayden-chan/)",
+  "contributors": [],
+  "license": "GPL-3.0"
 }
