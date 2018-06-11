@@ -3,18 +3,15 @@ $white: #ffffff;
 $lightGrey: #e6e6e6;
 $darkGrey: #333;
 $red: #ff1755;
+$ess_orange: #fc9206;
 
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
     font-weight: normal;
     font-style: normal;
-
-    .bold {
-        font-family: 'Roboto:500', sans-serif;
-        font-weight: 500;
-    }
 }
+
 
 @mixin translateY($e) {
     -webkit-transform : translateY($e);

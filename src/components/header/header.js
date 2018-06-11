@@ -5,7 +5,7 @@ class Header extends Component {
     return (
       <header>
         <div className="container-fluid">
-          <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+          <nav className="navbar navbar-expand-md navbar-dark bg-primary">
             <a className="navbar-brand" href="http://ess.uvic.ca">University of Victoria - Engineering Student Society</a>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ml-auto">

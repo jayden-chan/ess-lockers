@@ -9,7 +9,7 @@ import Header from './components/header/header.js';
 import Homepage from './components/pages/homepage.js';
 import Contact from './components/pages/contact.js';
 
-import './assets/css/default.min.css';
+import './assets/css/custom.min.css';
 
 class App extends Component {
   render() {
