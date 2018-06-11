@@ -1,3 +1,7 @@
-body {
-    font-size: 16px;
+@import '_config.scss';
+
+header {
+    .navbar-dark .navbar-nav .nav-link {
+        font-size: 16px;
+    }
 }

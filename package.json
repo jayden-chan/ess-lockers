@@ -25,6 +25,7 @@
     "gulp-clean-css": "^3.9.4",
     "gulp-rename": "^1.2.3",
     "gulp-sass": "^4.0.1",
-    "gulp-uglify": "^3.0.0"
+    "gulp-uglify": "^3.0.0",
+    "react-router-dom": "^4.3.1"
   }
 }

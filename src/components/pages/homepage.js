@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Homepage extends Component {
   render() {
     return (
-      <div classNameName="container-fluid">
+      <div className="container-fluid">
         <div className="jumbotron">
           <h1 className="display-4">ESS Locker Registration</h1>
           <h5 className="display-5"><b>Before registering please read the following information:</b></h5>
@@ -20,7 +20,7 @@ class Homepage extends Component {
             Before you register a locker, you need to <b>physically make sure the one you want is open.</b> Then you <b>have to put a lock on it.</b> If you don't, and the rest of the lockers have been registered, we will delete your registration and give the locker to someone more deserving.
           </p>
           <p className="lead">
-            <a className="btn btn-primary btn-lg" href="#" role="button">I'm ready to register</a>
+            <a className="btn btn-primary btn-lg" href="/" role="button">I'm ready to register</a>
           </p>
         </div>
       </div>
