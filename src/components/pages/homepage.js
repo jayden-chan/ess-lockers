@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Homepage extends Component {
   render() {
     return (
-      <div className="container-fluid">
+      <div className="container">
         <div className="jumbotron">
           <h1 className="display-4">ESS Locker Registration</h1>
           <h5 className="display-5"><b>Before registering please read the following information:</b></h5>
@@ -46,5 +46,4 @@ class Homepage extends Component {
     );
   }
 }
-
 export default Homepage;
