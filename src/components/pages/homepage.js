@@ -28,7 +28,7 @@ class Homepage extends Component {
         <div className="container">
           <div className="jumbotron">
             <h4 className="display-5" style={{marginBottom: 20}}>Renew existing locker reservation</h4>
-            <p>Renew existing locker registrations here. To prevent abandoned / forgotton lockers, reservations will automatically be removed at the beginning of each new term unless they are renewed.</p>
+            <p>Renew existing locker registrations here. To prevent abandoned / forgotten lockers, reservations will automatically be removed at the beginning of each new term unless they are renewed.</p>
             <a type="button" className="btn btn-primary btn-lg" href="/renew">
               Renew my locker
             </a>
@@ -39,7 +39,7 @@ class Homepage extends Component {
             <h4 className="display-5" style={{marginBottom: 20}}>Update / remove existing registration</h4>
             <p>Deregister or change your locker location here. Your locker reservation will automatically be removed at the beginning of each new term unless you renew it.</p>
             <a type="button" className="btn btn-primary btn-lg" href="/deregister" style={{marginRight: 20}}>
-              De-register a locker
+              Deregister a locker
             </a>
             <a type="button" className="btn btn-primary btn-lg" href="/register/update">
               Change locker number
