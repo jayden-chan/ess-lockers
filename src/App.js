@@ -11,6 +11,7 @@ import Register from './components/pages/register/register.js';
 import Update from './components/pages/register/update.js';
 import Deregister from './components/pages/deregister.js';
 import Renew from './components/pages/renew.js';
+import Lost from './components/pages/404.js';
 
 import './assets/css/custom.min.css';
 
@@ -26,6 +27,7 @@ class App extends Component {
           <Route exact path='/register/update' component={Update} />
           <Route exact path='/deregister' component={Deregister} />
           <Route exact path='/renew' component={Renew} />
+          <Route path='*' component={Lost} />
         </div>
       </Router>
     );
