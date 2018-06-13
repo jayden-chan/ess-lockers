@@ -1,3 +1,3 @@
-# ess-lockers
+# ESS Lockers
 
-This project is a web interface designed to run the ESS locker rental system.
+A web app designed to run the UVic Engineering Student Society locker rental system. Built with React.js, Node.js, and MySQL.
