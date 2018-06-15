@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
+  Switch
 } from 'react-router-dom';
 
 import Header from './components/header/header.js';
@@ -21,13 +22,15 @@ class App extends Component {
       <Router>
         <div className="App">
           <Header />
-          <Route exact path='/' component={Homepage} />
-          <Route exact path='/contact' component={Contact} />
-          <Route exact path='/register' component={Register} />
-          <Route exact path='/register/update' component={Update} />
-          <Route exact path='/deregister' component={Deregister} />
-          <Route exact path='/renew' component={Renew} />
-          <Route path='*' component={Lost} />
+          <Switch>
+            <Route exact path='/' component={Homepage} />
+            <Route exact path='/contact' component={Contact} />
+            <Route exact path='/register' component={Register} />
+            <Route exact path='/register/update' component={Update} />
+            <Route exact path='/deregister' component={Deregister} />
+            <Route exact path='/renew' component={Renew} />
+            <Route component={Lost} />
+          </Switch>
         </div>
       </Router>
     );

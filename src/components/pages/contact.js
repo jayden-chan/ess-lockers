@@ -5,9 +5,8 @@ class Contact extends Component {
     return (
       <div className="container">
         <div className="jumbotron">
-          <h1 className="display-4">
-            About / Contact
-          </h1>
+          <h1 className="display-4">About / Contact</h1>
+          <p>Lockers website maintainer: <a href="mailto:jaydencn7@gmail.com">Jayden Chan</a></p>
         </div>
       </div>
     );
