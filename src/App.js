@@ -25,7 +25,7 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={Homepage} />
             <Route path='/contact' component={Contact} />
-            <Route path='/register' component={Register} />
+            <Route exact path='/register' component={Register} />
             <Route path='/register/update' component={Update} />
             <Route path='/deregister' component={Deregister} />
             <Route path='/renew' component={Renew} />
