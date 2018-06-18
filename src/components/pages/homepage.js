@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Homepage extends Component {
   render() {
@@ -20,9 +21,11 @@ class Homepage extends Component {
             <p style={{marginTop: 30, marginBottom: 35}}>
               Before you register a locker, you need to <b>physically make sure the one you want is open.</b> Then <b>you have to put a lock on it.</b> If you don't, and the rest of the lockers have been registered, we will delete your registration and give the locker to someone more deserving.
             </p>
-            <a type="button" className="btn btn-primary btn-lg" href="/register">
-              I'm ready to register
-            </a>
+            <Link to="register">
+              <button class="btn btn-primary btn-lg">
+                I'm ready to register
+              </button>
+            </Link>
           </div>
         </div>
         <div className="container">

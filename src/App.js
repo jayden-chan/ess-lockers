@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Switch
 } from 'react-router-dom';
@@ -24,11 +24,11 @@ class App extends Component {
           <Header />
           <Switch>
             <Route exact path='/' component={Homepage} />
-            <Route exact path='/contact' component={Contact} />
-            <Route exact path='/register' component={Register} />
-            <Route exact path='/register/update' component={Update} />
-            <Route exact path='/deregister' component={Deregister} />
-            <Route exact path='/renew' component={Renew} />
+            <Route path='/contact' component={Contact} />
+            <Route path='/register' component={Register} />
+            <Route path='/register/update' component={Update} />
+            <Route path='/deregister' component={Deregister} />
+            <Route path='/renew' component={Renew} />
             <Route component={Lost} />
           </Switch>
         </div>
