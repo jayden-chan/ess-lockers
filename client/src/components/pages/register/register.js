@@ -63,10 +63,10 @@ class Register extends Component {
           <div className="form-group" style={{maxWidth: '40%'}}>
             <label htmlFor="lockerDrop">Choose your locker</label>
             <select id="lockerDrop" className="form-control" name="lockerValue" value={this.state.lockerValue} onChange={this.handleChange}>
-              <option value="coconut">1</option>
-              <option value="grapefruit">2</option>
-              <option value="lime">3</option>
-              <option value="mango">4</option>
+              <option value="one">1</option>
+              <option value="two">2</option>
+              <option value="three">3</option>
+              <option value="four">4</option>
             </select>
           </div>
           <input type="submit" className="btn btn-primary"value="Submit" />
