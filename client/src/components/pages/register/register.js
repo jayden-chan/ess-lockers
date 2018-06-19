@@ -36,7 +36,7 @@ class Register extends Component {
       })
     })
       .then(res => {
-        if(res.status === 200) {
+        if(res.status === 201) {
           this.props.history.push('/register/thankyou');
         }
         else if(res.status === 400) {

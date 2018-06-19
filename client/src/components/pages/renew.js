@@ -22,6 +22,24 @@ class Renew extends Component {
   }
 
   handleSubmit(event) {
+    fetch('http://localhost:3001/register/renew', {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: this.state.emailValue
+      })
+    })
+      .then(res => {
+        if(res.status === 201) {
+          this.props.history.push('/register/thankyou');
+        }
+        else if(res.status === 400) {
+          res.text().then(text => alert(text));
+        }
+      })
+
     event.preventDefault();
   }
 

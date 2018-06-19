@@ -23,6 +23,25 @@ class Update extends Component {
   }
 
   handleSubmit(event) {
+    fetch('http://localhost:3001/register/update', {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: this.state.emailValue,
+        locker: this.state.lockerValue
+      })
+    })
+      .then(res => {
+        if(res.status === 200) {
+          res.text().then(text => alert(text));
+        }
+        else if(res.status === 400) {
+          res.text().then(text => alert(text));
+        }
+      })
+
     event.preventDefault();
   }
 
@@ -38,10 +57,10 @@ class Update extends Component {
           <div className="form-group" style={{maxWidth: '40%'}}>
             <label htmlFor="lockerDrop">New locker number</label>
             <select id="lockerDrop" className="form-control" name="lockerValue" value={this.state.lockerValue} onChange={this.handleChange}>
-              <option value="coconut">1</option>
-              <option value="grapefruit">2</option>
-              <option value="lime">3</option>
-              <option value="mango">4</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
             </select>
           </div>
           <input type="submit" className="btn btn-primary"value="Submit" />
