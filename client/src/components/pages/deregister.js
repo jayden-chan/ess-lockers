@@ -25,7 +25,7 @@ class Deregister extends Component {
 
   handleSubmit(event) {
     console.log(this.state.codeValue);
-    fetch('http://localhost:3001/deregister/confirm', {
+    fetch('http://localhost:3001/api/deregister/confirm', {
       method: 'delete',
       headers: {
         'Content-Type': 'application/json'
@@ -47,7 +47,7 @@ class Deregister extends Component {
   }
 
   handleCode(event) {
-    fetch('http://localhost:3001/deregister/email', {
+    fetch('http://localhost:3001/api/deregister/email', {
       method: 'put',
       headers: {
         'Content-Type': 'application/json'

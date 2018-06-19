@@ -22,7 +22,7 @@ class Renew extends Component {
   }
 
   handleSubmit(event) {
-    fetch('http://localhost:3001/register/renew', {
+    fetch('http://localhost:3001/api/renew', {
       method: 'put',
       headers: {
         'Content-Type': 'application/json'

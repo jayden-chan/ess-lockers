@@ -23,7 +23,7 @@ class Update extends Component {
   }
 
   handleSubmit(event) {
-    fetch('http://localhost:3001/register/update', {
+    fetch('http://localhost:3001/api/update', {
       method: 'put',
       headers: {
         'Content-Type': 'application/json'
@@ -35,7 +35,7 @@ class Update extends Component {
     })
       .then(res => {
         if(res.status === 200) {
-          res.text().then(text => alert(text));
+          this.props.history.push('/register/thankyou');
         }
         else if(res.status === 400) {
           res.text().then(text => alert(text));

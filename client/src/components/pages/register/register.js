@@ -24,7 +24,7 @@ class Register extends Component {
   }
 
   handleSubmit(event) {
-    fetch('http://localhost:3001/register/new', {
+    fetch('http://localhost:3001/api/new', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
