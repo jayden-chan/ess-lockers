@@ -24,13 +24,33 @@ class Register extends Component {
   }
 
   handleSubmit(event) {
+    fetch('http://localhost:3001/register/new', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: this.state.nameValue,
+        email: this.state.emailValue,
+        locker: this.state.lockerValue
+      })
+    })
+      .then(res => {
+        if(res.status === 200) {
+          this.props.history.push('/register/thankyou');
+        }
+        else if(res.status === 400) {
+          res.text().then(text => alert(text));
+        }
+      })
+
     event.preventDefault();
   }
 
   render() {
     return (
       <div className="container">
-        <form onSubmit={this.handleSubmit} style={{marginTop: 30}}>
+        <form method="post" onSubmit={this.handleSubmit} style={{marginTop: 30}}>
           <div className="form-group">
             <label htmlFor="inputName">Name</label>
             <input type="text" name="nameValue" placeholder="Enter name" className="form-control" value={this.state.nameValue} onChange={this.handleChange} />
