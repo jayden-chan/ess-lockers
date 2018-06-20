@@ -26,8 +26,12 @@ class Register extends Component {
       .then(res => {
         if(res.status === 200) {
           res.json().then(json => {
+            let parsed = [];
+            json.forEach(element => {
+              parsed.push(element.number);
+            });
             this.setState({
-              lockerOptions: json
+              lockerOptions: parsed
             })
           });
         }
@@ -63,7 +67,7 @@ class Register extends Component {
         if(res.status === 201) {
           this.props.history.push('/register/thankyou');
         }
-        else if(res.status === 400) {
+        else {
           res.text().then(text => alert(text));
         }
       })
