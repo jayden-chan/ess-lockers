@@ -6,11 +6,35 @@ class Register extends Component {
     this.state = {
       nameValue: '',
       emailValue: '',
-      lockerValue: ''
+      lockerValue: '',
+      lockerOptions: []
     };
+
+    this.getLockers();
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  getLockers() {
+    fetch('http://localhost:3001/api/available', {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(res => {
+        if(res.status === 200) {
+          res.json().then(json => {
+            this.setState({
+              lockerOptions: json
+            })
+          });
+        }
+        else if(res.status === 400) {
+          res.text().then(text => alert(text));
+        }
+      })
   }
 
   handleChange(event) {
@@ -63,10 +87,12 @@ class Register extends Component {
           <div className="form-group" style={{maxWidth: '40%'}}>
             <label htmlFor="lockerDrop">Choose your locker</label>
             <select id="lockerDrop" className="form-control" name="lockerValue" value={this.state.lockerValue} onChange={this.handleChange}>
-              <option value="one">1</option>
-              <option value="two">2</option>
-              <option value="three">3</option>
-              <option value="four">4</option>
+              <option value="" disabled>Select locker</option>
+              {
+                this.state.lockerOptions.map(locker => {
+                  return <option key={locker.toString()} value={locker}>{locker}</option>;
+                })
+              }
             </select>
           </div>
           <input type="submit" className="btn btn-primary"value="Submit" />
