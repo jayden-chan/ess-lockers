@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 class Deregister extends Component {
-  confirmedEmail = '';
   constructor(props) {
     super(props);
     this.state = {
@@ -25,10 +24,47 @@ class Deregister extends Component {
   }
 
   handleSubmit(event) {
+    console.log(this.state.codeValue);
+    fetch('http://localhost:3001/api/deregister/confirm', {
+      method: 'delete',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        code: this.state.codeValue
+      })
+    })
+      .then(res => {
+        if(res.status === 200) {
+          res.text().then(text => alert(text));
+        }
+        else if(res.status === 400) {
+          res.text().then(text => alert(text));
+        }
+      })
+
     event.preventDefault();
   }
 
   handleCode(event) {
+    fetch('http://localhost:3001/api/deregister/email', {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: this.state.emailValue,
+      })
+    })
+      .then(res => {
+        if(res.status === 200) {
+          res.text().then(text => alert(text));
+        }
+        else if(res.status === 400) {
+          res.text().then(text => alert(text));
+        }
+      })
+
     event.preventDefault();
   }
 

@@ -10,6 +10,8 @@ class Register extends Component {
       lockerOpt: []
     };
 
+    this.getLockers();
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -46,7 +48,7 @@ class Register extends Component {
   }
 
   handleSubmit(event) {
-    fetch('http://localhost:3001/register/new', {
+    fetch('http://localhost:3001/api/new', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
@@ -58,10 +60,10 @@ class Register extends Component {
       })
     })
       .then(res => {
-        if(res.status === 200) {
+        if(res.status === 201) {
           this.props.history.push('/register/thankyou');
         }
-        else if(res.status === 400) {
+        else {
           res.text().then(text => alert(text));
         }
       })
@@ -88,6 +90,7 @@ class Register extends Component {
               {this.state.lockerOpt.map(value => {
                 return <option key={value.number}>{value.number}</option>
               })}
+              <option value="" disabled>Select locker</option>
             </select>
           </div>
           <input type="submit" className="btn btn-primary"value="Submit" />
