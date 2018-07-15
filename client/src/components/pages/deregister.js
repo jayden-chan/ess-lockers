@@ -4,7 +4,7 @@ class Deregister extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      emailValue: '',
+      numberValue: '',
       codeValue: ''
     };
 
@@ -53,7 +53,7 @@ class Deregister extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: this.state.emailValue,
+        email: this.state.numberValue,
       })
     })
       .then(res => {
@@ -73,11 +73,11 @@ class Deregister extends Component {
       <div className="container">
         <form onSubmit={this.handleSubmit} style={{marginTop: 30}}>
           <div className="form-group">
-            <label htmlFor="inputEmail">Email address</label>
+            <label htmlFor="inputNumber">Locker number</label>
             <div className="form-row">
-              <div className="form-group col-md-8">
-                <input type="email" name="emailValue" id="inputEmail" placeholder="Enter email" className="form-control" value={this.state.emailValue} onChange={this.handleChange} />
-                <small id="emailHelp" className="form-text text-muted">Enter the same email address you used to reserve your locker. A confirmation email will be sent containing a short security code.</small>
+              <div className="form-group col-md-3">
+                <input type="number" name="numberValue" id="inputNumber" placeholder="Enter locker number" className="form-control" value={this.state.numberValue} onChange={this.handleChange} />
+                <small id="numberHelp" className="form-text text-muted">Enter the locker number you wish to deregister. A confirmation email will be sent to the address associated with the locker.</small>
               </div>
               <div className="form-group col-md-2">
                 <input type="button" className="btn btn-primary"value="Send code" onClick={this.handleCode}/>

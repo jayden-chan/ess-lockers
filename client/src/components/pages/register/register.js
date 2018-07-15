@@ -15,21 +15,21 @@ class Register extends Component {
   }
 
   getLockerOpts() {
-    fetch('http://localhost:3001/registration/available', {
+    fetch('http://localhost:3001/api/registration/available', {
       method: 'get',
       headers: {
         'Content-Type': 'application/json'
       }
     })
-    .then(res => {
-      if(res.status === 200) {
-        return res.json();
-      } else {
-        console.log("Lockers req failed");
-        return [];
-      }    
-    })
-    .then(json => this.setState({lockerOpt: json}));
+      .then(res => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          console.log("Lockers req failed");
+          return [];
+        }
+      })
+      .then(json => this.setState({ lockerOpt: json }));
   }
 
   componentWillMount() {
@@ -59,7 +59,7 @@ class Register extends Component {
       })
     })
       .then(res => {
-        if(res.status === 201) {
+        if (res.status === 200) {
           this.props.history.push('/register/thankyou');
         }
         else {
@@ -73,7 +73,7 @@ class Register extends Component {
   render() {
     return (
       <div className="container">
-        <form method="post" onSubmit={this.handleSubmit} style={{marginTop: 30}}>
+        <form method="post" onSubmit={this.handleSubmit} style={{ marginTop: 30 }}>
           <div className="form-group">
             <label htmlFor="inputName">Name</label>
             <input type="text" name="nameValue" placeholder="Enter name" className="form-control" value={this.state.nameValue} onChange={this.handleChange} />
@@ -83,7 +83,7 @@ class Register extends Component {
             <input type="email" name="emailValue" id="inputEmail" placeholder="Enter email" className="form-control" value={this.state.emailValue} onChange={this.handleChange} />
             <small id="emailHelp" className="form-text text-muted">Your email will not be shared with anyone else. We will send you messages regarding the status of your reservation.</small>
           </div>
-          <div className="form-group" style={{maxWidth: '40%'}}>
+          <div className="form-group" style={{ maxWidth: '40%' }}>
             <label htmlFor="lockerDrop">Choose your locker</label>
             <select id="lockerDrop" className="form-control" name="lockerValue" value={this.state.lockerValue} onChange={this.handleChange}>
               {this.state.lockerOpt.map(value => {
@@ -92,7 +92,7 @@ class Register extends Component {
               <option value="" disabled>Select locker</option>
             </select>
           </div>
-          <input type="submit" className="btn btn-primary"value="Submit" />
+          <input type="submit" className="btn btn-primary" value="Submit" />
         </form>
       </div>
     );
