@@ -10,8 +10,6 @@ class Register extends Component {
       lockerOpt: []
     };
 
-    this.getLockers();
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -27,13 +25,15 @@ class Register extends Component {
       if(res.status === 200) {
         return res.json();
       } else {
+        console.log("Lockers req failed");
+        
         return [];
       }    
     })
     .then(json => this.setState({lockerOpt: json}));
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getLockerOpts()
   }
 
