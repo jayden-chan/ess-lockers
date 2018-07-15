@@ -6,11 +6,33 @@ class Register extends Component {
     this.state = {
       nameValue: '',
       emailValue: '',
-      lockerValue: ''
+      lockerValue: '',
+      lockerOpt: []
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  getLockerOpts() {
+    fetch('http://localhost:3001/registration/available', {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      if(res.status === 200) {
+        return res.json();
+      } else {
+        return [];
+      }    
+    })
+    .then(json => this.setState({lockerOpt: json}));
+  }
+
+  componentDidMount() {
+    this.getLockerOpts()
   }
 
   handleChange(event) {
@@ -63,10 +85,9 @@ class Register extends Component {
           <div className="form-group" style={{maxWidth: '40%'}}>
             <label htmlFor="lockerDrop">Choose your locker</label>
             <select id="lockerDrop" className="form-control" name="lockerValue" value={this.state.lockerValue} onChange={this.handleChange}>
-              <option value="coconut">1</option>
-              <option value="grapefruit">2</option>
-              <option value="lime">3</option>
-              <option value="mango">4</option>
+              {this.state.lockerOpt.map(value => {
+                return <option key={value.number}>{value.number}</option>
+              })}
             </select>
           </div>
           <input type="submit" className="btn btn-primary"value="Submit" />
