@@ -26,7 +26,6 @@ class Register extends Component {
         return res.json();
       } else {
         console.log("Lockers req failed");
-        
         return [];
       }    
     })
