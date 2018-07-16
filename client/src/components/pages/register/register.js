@@ -15,7 +15,7 @@ class Register extends Component {
   }
 
   getLockerOpts() {
-    fetch('http://localhost:3001/api/registration/available', {
+    fetch('http://localhost:3001/api/available', {
       method: 'get',
       headers: {
         'Content-Type': 'application/json'

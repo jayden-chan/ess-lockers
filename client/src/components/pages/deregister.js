@@ -47,7 +47,7 @@ class Deregister extends Component {
   }
 
   handleCode(event) {
-    fetch('http://localhost:3001/api/deregister/email', {
+    fetch('http://localhost:3001/api/deregister/code', {
       method: 'put',
       headers: {
         'Content-Type': 'application/json'
@@ -57,12 +57,7 @@ class Deregister extends Component {
       })
     })
       .then(res => {
-        if(res.status === 200) {
-          res.text().then(text => alert(text));
-        }
-        else if(res.status === 400) {
-          res.text().then(text => alert(text));
-        }
+        res.text().then(text => alert(text));
       })
 
     event.preventDefault();
