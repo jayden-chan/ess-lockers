@@ -5,7 +5,8 @@ class Deregister extends Component {
     super(props);
     this.state = {
       numberValue: '',
-      codeValue: ''
+      codeValue: '',
+      emailValue: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -35,12 +36,7 @@ class Deregister extends Component {
       })
     })
       .then(res => {
-        if(res.status === 200) {
           res.text().then(text => alert(text));
-        }
-        else if(res.status === 400) {
-          res.text().then(text => alert(text));
-        }
       })
 
     event.preventDefault();
@@ -48,12 +44,13 @@ class Deregister extends Component {
 
   handleCode(event) {
     fetch('http://localhost:3001/api/deregister/code', {
-      method: 'put',
+      method: 'post',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: this.state.numberValue,
+        number: this.state.numberValue,
+        email: this.state.emailValue
       })
     })
       .then(res => {
@@ -68,9 +65,15 @@ class Deregister extends Component {
       <div className="container">
         <form onSubmit={this.handleSubmit} style={{marginTop: 30}}>
           <div className="form-group">
+            <label htmlFor="inputCode">Email</label>
+            <div className="form-row">
+              <div className="form-group col-md-6">
+                <input type="email" name="emailValue" id="inputEmail" placeholder="Enter email" className="form-control" value={this.state.emailValue} onChange={this.handleChange} />
+              </div>
+            </div>
             <label htmlFor="inputNumber">Locker number</label>
             <div className="form-row">
-              <div className="form-group col-md-3">
+              <div className="form-group col-md-4">
                 <input type="number" name="numberValue" id="inputNumber" placeholder="Enter locker number" className="form-control" value={this.state.numberValue} onChange={this.handleChange} />
                 <small id="numberHelp" className="form-text text-muted">Enter the locker number you wish to deregister. A confirmation email will be sent to the address associated with the locker.</small>
               </div>
