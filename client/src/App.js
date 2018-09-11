@@ -8,8 +8,7 @@ import {
 import Header from './components/header/header.js';
 import Homepage from './components/pages/homepage.js';
 import Contact from './components/pages/contact.js';
-import Register from './components/pages/register/register.js';
-import Update from './components/pages/register/update.js';
+import Register from './components/pages/register.js';
 import Deregister from './components/pages/deregister.js';
 import Renew from './components/pages/renew.js';
 import Lost from './components/pages/404.js';
@@ -27,7 +26,6 @@ class App extends Component {
             <Route exact path='/' component={Homepage} />
             <Route path='/contact' component={Contact} />
             <Route exact path='/register' component={Register} />
-            <Route path='/register/update' component={Update} />
             <Route path='/register/thankyou' component={ThankYou} />
             <Route path='/deregister' component={Deregister} />
             <Route path='/renew' component={Renew} />

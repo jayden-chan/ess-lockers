@@ -42,15 +42,10 @@ class Homepage extends Component {
         <div className="container">
           <div className="jumbotron">
             <h4 className="display-5" style={{marginBottom: 20}}>Update / remove existing registration</h4>
-            <p>Deregister or change your locker location here. Your locker reservation will automatically be removed at the beginning of each new term unless you renew it.</p>
+            <p>Deregister your locker here. Your locker reservation will automatically be removed at the beginning of each new term unless you renew it.</p>
             <Link to="deregister">
               <button className="btn btn-primary btn-lg">
                 Deregister a locker
-              </button>
-            </Link>
-            <Link to="register/update" style={{marginLeft: 20}}>
-              <button className="btn btn-primary btn-lg">
-                Change locker number
               </button>
             </Link>
           </div>
