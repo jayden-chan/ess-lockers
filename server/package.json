@@ -20,11 +20,12 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "js-sha256": "^0.9.0",
-<<<<<<< HEAD
-    "mysql": "^2.15.0"
-=======
     "mysql": "^2.15.0",
     "sqlstring": "^2.3.1"
->>>>>>> aa1e8d9034e8049ca7aadece607067c4d62d64e0
+  },
+  "devDependencies": {
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
   }
 }
