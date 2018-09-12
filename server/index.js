@@ -50,9 +50,8 @@ app.post('/api/new', (req, res) => {
     const query1 = sqlstring.format('SELECT * FROM lockers WHERE email = ?', req.body.email);
     connection.query(query1, (error, results, fields) => {
       if(results.length === 0) {
-        const regid = sha256(req.body.name + req.body.email + req.body.locker);
-        const query2 = sqlstring.format('UPDATE lockers SET name = ?, email = ?, submitted = NOW(), regid = ?, status = ? WHERE number = ?',
-          [req.body.name, req.body.email, regid, 'closed', req.body.locker]);
+        const query2 = sqlstring.format('UPDATE lockers SET name = ?, email = ?, submitted = NOW(), status = ? WHERE number = ?',
+          [req.body.name, req.body.email, 'closed', req.body.locker]);
 
         connection.query(query2, (error, results, fields) => {
           if (error) {
@@ -167,25 +166,34 @@ app.post('/api/deregister/code', (req, res) => {
 
 app.delete('/api/deregister/confirm', (req, res) => {
   if (req.body.code !== '') {
-    const query = sqlstring.format('UPDATE lockers SET reset_code = ?, status = ? WHERE reset_code = ?',
-      [null, 'open', req.body.code]);
-
+    const query1 = sqlstring.format('SELECT * FROM lockers WHERE reset_code = ?', req.body.code)
     connection.query(query, (error, results, fields) => {
       if (error) {
         res.status(500).send('Database query failed');
+      } else if (results.length !== 1) {
+        res.status(400).send('Invalid reset code. Please try again later');
       } else {
-        sendmail({
-          from: 'ess@engr.uvic.ca',
-          to: req.body.email,
-          subject: '[DO-NOT-REPLY] ESS Locker Deregistration',
-          html: '<p>Hello there ' + req.body.name + ',</p>'+
-          '<p>You have successfully deregistered locker ' + req.body.number + ' in the ELW.</p>'+
-          '<p>Thank you for helping to ensure there are enough available lockers.</p>'
-        }, function(err, reply) {
-          console.log(err && err.stack);
-          console.dir(reply);
+        const query2 = sqlstring.format('UPDATE lockers SET reset_code = ?, status = ? WHERE reset_code = ?',
+          [null, 'open', req.body.code]);
+
+        connection.query(query, (error, results, fields) => {
+          if (error) {
+            res.status(500).send('Database query failed');
+          } else {
+            sendmail({
+              from: 'ess@engr.uvic.ca',
+              to: req.body.email,
+              subject: '[DO-NOT-REPLY] ESS Locker Deregistration',
+              html: '<p>Hello there ' + req.body.name + ',</p>'+
+              '<p>You have successfully deregistered locker ' + req.body.number + ' in the ELW.</p>'+
+              '<p>Thank you for helping to ensure there are enough available lockers.</p>'
+            }, function(err, reply) {
+              console.log(err && err.stack);
+              console.dir(reply);
+            });
+            res.status(200).send('Locker successfully deregistered');
+          }
         });
-        res.status(200).send('Locker successfully deregistered');
       }
     });
   } else {
