@@ -3,6 +3,7 @@ const sqlstring = require('sqlstring');
 const mysql = require('mysql');
 const sha256 = require('js-sha256').sha256;
 const express = require('express');
+const sendmail = require('sendmail')();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -104,6 +105,19 @@ app.post('/api/deregister/code', (req, res) => {
           } else {
             res.status(200).send('Locker reset code generated.');
           }
+        });
+
+        sendmail({
+          from: 'ess@engr.uvic.ca',
+          to: req.body.email,
+          subject: 'ESS Locker Deregistration',
+          html: '<body>Hello there!</body>'+
+          '<p>You are recieving this email because you requested a locker registration removal.</p>'+
+          '<p>Your code is:' + resetCode + '<p>'+
+          '<p>If you did not request this reset you may safely ignore this email.</p>';
+        }, function(err, reply) {
+          console.log(err && err.stack);
+          console.dir(reply);
         });
 
         var timer = setTimeout(() => {
