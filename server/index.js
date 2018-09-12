@@ -58,6 +58,20 @@ app.post('/api/new', (req, res) => {
           if (error) {
             res.status(500).send('Database query failed.');
           } else {
+            sendmail({
+              from: 'ess@engr.uvic.ca',
+              to: req.body.email,
+              subject: 'ESS Locker Registration',
+              html: '<p>Hello there ' + req.body.name + ',</p>'+
+              '<p>You have successfully registered locker ' + req.body.number + ' in the ELW</p>'+
+              '<p>You reservation will be valid until the beginning of next term, at which point you must renew it.</p>'+
+              '<p>If you would like to free up the locker for someone else to use before'+
+              'the start of next term, you may deregister it at the following link: </p>'+
+              '<p>http://ess.uvic.ca/lockers/deregister</p>'
+            }, function(err, reply) {
+              console.log(err && err.stack);
+              console.dir(reply);
+            });
             res.status(200).send('Locker registered successfully');
           }
         });
@@ -80,6 +94,20 @@ app.post('/api/renew', (req, res) => {
       if (error) {
         res.status(500).send('Database query failed.');
       } else {
+        sendmail({
+          from: 'ess@engr.uvic.ca',
+          to: req.body.email,
+          subject: 'ESS Locker Renewal',
+          html: '<p>Hello there ' + req.body.name + ',</p>'+
+          '<p>You have successfully renewed locker ' + req.body.number + ' in the ELW</p>'+
+          '<p>You reservation will be valid until the beginning of next term, at which point you must renew it again.</p>'+
+          '<p>If you would like to free up the locker for someone else to use before'+
+          'the start of next term, you may deregister it at the following link: </p>'+
+          '<p>http://ess.uvic.ca/lockers/deregister</p>'
+        }, function(err, reply) {
+          console.log(err && err.stack);
+          console.dir(reply);
+        });
         res.status(200).send('Locker renewed successfully');
       }
     });
@@ -111,9 +139,9 @@ app.post('/api/deregister/code', (req, res) => {
           from: 'ess@engr.uvic.ca',
           to: req.body.email,
           subject: 'ESS Locker Deregistration',
-          html: '<body>Hello there!</body>'+
-          '<p>You are recieving this email because you requested a locker registration removal.</p>'+
-          '<p>Your code is:' + resetCode + '<p>'+
+          html: '<p>Hello there,</p>'+
+          '<p>You are receiving this email because you requested a locker registration removal.</p>'+
+          '<p>Your code is: ' + resetCode + '</p>'+
           '<p>If you did not request this reset you may safely ignore this email.</p>';
         }, function(err, reply) {
           console.log(err && err.stack);
@@ -146,6 +174,17 @@ app.delete('/api/deregister/confirm', (req, res) => {
       if (error) {
         res.status(500).send('Database query failed');
       } else {
+        sendmail({
+          from: 'ess@engr.uvic.ca',
+          to: req.body.email,
+          subject: 'ESS Locker Deregistration',
+          html: '<p>Hello there ' + req.body.name + ',</p>'+
+          '<p>You have successfully deregistered locker ' + req.body.number + ' in the ELW</p>'+
+          '<p>Thank you for helping to ensure there are enough available lockers.</p>'
+        }, function(err, reply) {
+          console.log(err && err.stack);
+          console.dir(reply);
+        });
         res.status(200).send('Locker successfully deregistered');
       }
     });
