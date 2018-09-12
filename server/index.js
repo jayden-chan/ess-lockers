@@ -7,12 +7,14 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const RESET_TIMEOUT = process.env.LOCKER_RESET_TIME || 10000;
+const SQL_USER = process.env.LOCKER_SQL_USER || 'lockers';
+const SQL_PASSWORD = process.env.LOCKER_SQL_PASSWORD || 'no_password';
 
 app.use((req, res, next) => {
   global.connection = mysql.createPool({
     host: 'localhost',
-    user: 'lockers',
-    password: 'lockerbuddy',
+    user: SQL_USER,
+    password: SQL_PASSWORD,
     database: 'lockers2011',
   });
   next();
