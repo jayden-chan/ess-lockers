@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/lockersapi/available', (req, res) => {
-  const query = sqlstring.format('SELECT number FROM ?? WHERE status = ?', SQL_TABLE, 'open');
+  const query = sqlstring.format('SELECT number FROM ?? WHERE status = ?', [SQL_TABLE, 'open']);
   connection.query(query, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -47,7 +47,7 @@ app.get('/lockersapi/available', (req, res) => {
 app.post('/lockersapi/new', (req, res) => {
   if (req.body.name !== '' && req.body.email !== '' && req.body.locker !== '') {
 
-    const query1 = sqlstring.format('SELECT * FROM ?? WHERE email = ?', SQL_TABLE, req.body.email);
+    const query1 = sqlstring.format('SELECT * FROM ?? WHERE email = ?', [SQL_TABLE, req.body.email]);
     connection.query(query1, (error, results, fields) => {
       if(results.length === 0) {
         const query2 = sqlstring.format('UPDATE ?? SET name = ?, email = ?, submitted = NOW(), status = ? WHERE number = ?',
@@ -117,7 +117,7 @@ app.post('/lockersapi/renew', (req, res) => {
 
 app.post('/lockersapi/deregister/code', (req, res) => {
   if (req.body.number !== '' && req.body.email !== '') {
-    const query = sqlstring.format('SELECT email FROM ?? WHERE number = ?', SQL_TABLE, req.body.number);
+    const query = sqlstring.format('SELECT email FROM ?? WHERE number = ?', [SQL_TABLE, req.body.number]);
     connection.query(query, (error, results, fields) => {
       if (error) {
         console.log(error);
@@ -168,7 +168,7 @@ app.post('/lockersapi/deregister/code', (req, res) => {
 
 app.delete('/lockersapi/deregister/confirm', (req, res) => {
   if (req.body.code !== '') {
-    const query1 = sqlstring.format('SELECT * FROM ?? WHERE reset_code = ?', SQL_TABLE, req.body.code)
+    const query1 = sqlstring.format('SELECT * FROM ?? WHERE reset_code = ?', [SQL_TABLE, req.body.code])
     connection.query(query, (error, results, fields) => {
       if (error) {
         console.log(error);
