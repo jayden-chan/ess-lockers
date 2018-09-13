@@ -132,31 +132,31 @@ app.post('/lockersapi/deregister/code', (req, res) => {
             console.log(error);
             res.status(500).send('Database query failed');
           } else {
+            sendmail({
+              from: 'ess@engr.uvic.ca',
+              to: req.body.email,
+              subject: '[DO-NOT-REPLY] ESS Locker Deregistration',
+              html: '<p>Hello there,</p>'+
+              '<p>You are receiving this email because you requested a locker registration removal.</p>'+
+              '<p>Your code is: ' + resetCode + '</p>'+
+              '<p>If you did not request this you may safely ignore this email.</p>'
+            }, function(err, reply) {
+              return;
+            });
+
+            var timer = setTimeout(() => {
+              const query = sqlstring.format('UPDATE ?? SET reset_code = NULL', SQL_TABLE);
+              connection.query(query, (error, results, fields) => {
+                if (error) {
+                  console.log(error);
+                  console.log('Reset codes not reset');
+                }
+              });
+            }, RESET_TIMEOUT); // Reset the locker codes after 20 minutes
+
             res.status(200).send('Locker reset code generated.');
           }
         });
-
-        sendmail({
-          from: 'ess@engr.uvic.ca',
-          to: req.body.email,
-          subject: '[DO-NOT-REPLY] ESS Locker Deregistration',
-          html: '<p>Hello there,</p>'+
-          '<p>You are receiving this email because you requested a locker registration removal.</p>'+
-          '<p>Your code is: ' + resetCode + '</p>'+
-          '<p>If you did not request this you may safely ignore this email.</p>'
-        }, function(err, reply) {
-          return;
-        });
-
-        var timer = setTimeout(() => {
-          const query = sqlstring.format('UPDATE ?? SET reset_code = NULL', SQL_TABLE);
-          connection.query(query, (error, results, fields) => {
-            if (error) {
-              console.log(error);
-              console.log('Reset codes not reset');
-            }
-          });
-        }, RESET_TIMEOUT); // Reset the locker codes after 20 minutes
       } else {
         res.status(400).send('Locker does not belong to this email.');
       }
@@ -169,7 +169,7 @@ app.post('/lockersapi/deregister/code', (req, res) => {
 app.delete('/lockersapi/deregister/confirm', (req, res) => {
   if (req.body.code !== '') {
     const query1 = sqlstring.format('SELECT * FROM ?? WHERE reset_code = ?', [SQL_TABLE, req.body.code])
-    connection.query(query, (error, results, fields) => {
+    connection.query(query1, (error, results, fields) => {
       if (error) {
         console.log(error);
         res.status(500).send('Database query failed');
@@ -179,7 +179,7 @@ app.delete('/lockersapi/deregister/confirm', (req, res) => {
         const query2 = sqlstring.format('UPDATE ?? SET reset_code = ?, status = ? WHERE reset_code = ?',
           [SQL_TABLE, null, 'open', req.body.code]);
 
-        connection.query(query, (error, results, fields) => {
+        connection.query(query2, (error, results, fields) => {
           if (error) {
             console.log(error);
             res.status(500).send('Database query failed');
