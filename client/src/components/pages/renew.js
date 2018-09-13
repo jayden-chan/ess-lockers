@@ -38,6 +38,8 @@ class Renew extends Component {
       .then(res => {
         if (res.status === 200) {
           this.props.history.push('/register/thankyou');
+        } else if (res.status >= 500) {
+          alert('An internal server error occurred, please try again later or contact the maintanter.');
         } else {
           res.text().then(text => alert(text));
         }

@@ -40,7 +40,11 @@ class Deregister extends Component {
       })
     })
       .then(res => {
+        if(res.status >= 500) {
+          alert('An internal server error occurred, please try again later or contact the maintaner.');
+        } else {
           res.text().then(text => alert(text));
+        }
       })
 
     event.preventDefault();
@@ -60,7 +64,11 @@ class Deregister extends Component {
       })
     })
       .then(res => {
-        res.text().then(text => alert(text));
+        if(res.status >= 500) {
+          alert('An internal server error occurred, please try again later or contact the maintaner.');
+        } else {
+          res.text().then(text => alert(text));
+        }
       })
 
     event.preventDefault();

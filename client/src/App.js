@@ -13,6 +13,8 @@ import Deregister from './components/pages/deregister.js';
 import Renew from './components/pages/renew.js';
 import Lost from './components/pages/404.js';
 import ThankYou from './components/pages/thankyou.js';
+import RenewDone from './components/pages/renewDone.js';
+import DeregDone from './components/pages/deregDone.js';
 
 import './assets/css/custom.min.css';
 
@@ -27,9 +29,10 @@ class App extends Component {
             <Route path='/contact' component={Contact} />
             <Route exact path='/register' component={Register} />
             <Route path='/register/thankyou' component={ThankYou} />
-            <Route path='/deregister' component={Deregister} />
-            <Route path='/renew' component={Renew} />
-            <Route path='/reregisterlocker' component={Renew} />
+            <Route exact path='/deregister' component={Deregister} />
+            <Route path='/deregister/thankyou' component={DeregDone} />
+            <Route exact path='/renew' component={Renew} />
+            <Route path='/renew/thankyou' component={RenewDone} />
             <Route component={Lost} />
           </Switch>
         </div>
