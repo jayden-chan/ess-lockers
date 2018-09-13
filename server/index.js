@@ -138,7 +138,7 @@ app.post('/api/deregister/code', (req, res) => {
           html: '<p>Hello there,</p>'+
           '<p>You are receiving this email because you requested a locker registration removal.</p>'+
           '<p>Your code is: ' + resetCode + '</p>'+
-          '<p>If you did not request this you may safely ignore this email.</p>';
+          '<p>If you did not request this you may safely ignore this email.</p>'
         }, function(err, reply) {
           return;
         });

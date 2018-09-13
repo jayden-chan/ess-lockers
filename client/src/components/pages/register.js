@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+const API_URL = 'http://ess.uvic.ca:3001'
 
 class Register extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class Register extends Component {
   }
 
   getLockerOpts() {
-    fetch('http://localhost:3001/api/available', {
+    fetch(API_URL+'/api/available', {
       method: 'get',
       headers: {
         'Content-Type': 'application/json'
@@ -47,7 +48,7 @@ class Register extends Component {
   }
 
   handleSubmit(event) {
-    fetch('http://localhost:3001/api/new', {
+    fetch(API_URL+'/api/new', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
