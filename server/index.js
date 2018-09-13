@@ -36,6 +36,7 @@ app.get('/lockersapi/available', (req, res) => {
   const query = sqlstring.format('SELECT number FROM ?? WHERE status = ?', SQL_TABLE, 'open');
   connection.query(query, (error, results, fields) => {
     if (error) {
+      console.log(error);
       res.status(500).send('Database query failed.');
     } else {
       res.status(200).send(JSON.stringify(results));
@@ -54,6 +55,7 @@ app.post('/lockersapi/new', (req, res) => {
 
         connection.query(query2, (error, results, fields) => {
           if (error) {
+            console.log(error);
             res.status(500).send('Database query failed.');
           } else {
             sendmail({
@@ -89,6 +91,7 @@ app.post('/lockersapi/renew', (req, res) => {
 
     connection.query(query, (error, results, fields) => {
       if (error) {
+        console.log(error);
         res.status(500).send('Database query failed.');
       } else {
         sendmail({
@@ -117,6 +120,7 @@ app.post('/lockersapi/deregister/code', (req, res) => {
     const query = sqlstring.format('SELECT email FROM ?? WHERE number = ?', SQL_TABLE, req.body.number);
     connection.query(query, (error, results, fields) => {
       if (error) {
+        console.log(error);
         res.status(500).send('Database query failed.');
       } else if (results.length === 1 && results[0].email === req.body.email) {
         const resetCode = Math.floor(100000 + Math.random() * 900000);
@@ -125,6 +129,7 @@ app.post('/lockersapi/deregister/code', (req, res) => {
 
         connection.query(query, (error, results, fields) => {
           if (error) {
+            console.log(error);
             res.status(500).send('Database query failed');
           } else {
             res.status(200).send('Locker reset code generated.');
@@ -147,6 +152,7 @@ app.post('/lockersapi/deregister/code', (req, res) => {
           const query = sqlstring.format('UPDATE ?? SET reset_code = NULL', SQL_TABLE);
           connection.query(query, (error, results, fields) => {
             if (error) {
+              console.log(error);
               console.log('Reset codes not reset');
             }
           });
@@ -165,6 +171,7 @@ app.delete('/lockersapi/deregister/confirm', (req, res) => {
     const query1 = sqlstring.format('SELECT * FROM ?? WHERE reset_code = ?', SQL_TABLE, req.body.code)
     connection.query(query, (error, results, fields) => {
       if (error) {
+        console.log(error);
         res.status(500).send('Database query failed');
       } else if (results.length !== 1) {
         res.status(400).send('Invalid reset code. Please try again later');
@@ -174,6 +181,7 @@ app.delete('/lockersapi/deregister/confirm', (req, res) => {
 
         connection.query(query, (error, results, fields) => {
           if (error) {
+            console.log(error);
             res.status(500).send('Database query failed');
           } else {
             sendmail({
