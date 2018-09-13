@@ -28,6 +28,7 @@ class Deregister extends Component {
     console.log(this.state.codeValue);
     fetch('/lockersapi/deregister/confirm', {
       method: 'delete',
+      mode: 'same-origin',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -45,6 +46,7 @@ class Deregister extends Component {
   handleCode(event) {
     fetch('/lockersapi/deregister/code', {
       method: 'post',
+      mode: 'same-origin',
       headers: {
         'Content-Type': 'application/json'
       },

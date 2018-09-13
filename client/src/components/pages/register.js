@@ -17,6 +17,7 @@ class Register extends Component {
   getLockerOpts() {
     fetch('/lockersapi/available', {
       method: 'get',
+      mode: 'same-origin',
       headers: {
         'Content-Type': 'application/json'
       }
@@ -49,6 +50,7 @@ class Register extends Component {
   handleSubmit(event) {
     fetch('/lockersapi/new', {
       method: 'post',
+      mode: 'same-origin',
       headers: {
         'Content-Type': 'application/json'
       },

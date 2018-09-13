@@ -24,6 +24,7 @@ class Renew extends Component {
   handleSubmit(event) {
     fetch('/lockersapi/renew', {
       method: 'post',
+      mode: 'same-origin',
       headers: {
         'Content-Type': 'application/json'
       },
