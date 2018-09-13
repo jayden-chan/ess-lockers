@@ -95,7 +95,7 @@ app.post('/lockersapi/renew', (req, res) => {
       if (error) {
         console.log(error);
         res.status(500).send('Database query failed.');
-      } else if(results.length === 1) {
+      } else if(results1.length === 1) {
 
         const query2 = sqlstring.format('UPDATE ?? SET status = ? WHERE status = ? AND email = ?',
           [SQL_TABLE, 'closed', 'pending', req.body.email]);
@@ -109,8 +109,8 @@ app.post('/lockersapi/renew', (req, res) => {
               from: 'ess@engr.uvic.ca',
               to: req.body.email,
               subject: '[DO-NOT-REPLY] ESS Locker Renewal',
-              html: '<p>Hello there ' + results1.name + ',</p>'+
-              '<p>You have successfully renewed locker ' + results1.number + ' in the ELW.</p>'+
+              html: '<p>Hello there ' + results1[0].name + ',</p>'+
+              '<p>You have successfully renewed locker ' + results1[0].number + ' in the ELW.</p>'+
               '<p>You reservation will be valid until the beginning of next term, at which point you must renew it again.</p>'+
               '<p>If you would like to free up the locker for someone else to use before '+
               'the start of next term, you may deregister it at the following link: </p>'+
@@ -190,7 +190,7 @@ app.delete('/lockersapi/deregister/confirm', (req, res) => {
       if (error) {
         console.log(error);
         res.status(500).send('Database query failed');
-      } else if (results.length !== 1) {
+      } else if (results1.length !== 1) {
         res.status(400).send('Invalid reset code. Please try again later');
       } else {
         const query2 = sqlstring.format('UPDATE ?? SET reset_code = ?, status = ? WHERE reset_code = ?',
@@ -203,10 +203,10 @@ app.delete('/lockersapi/deregister/confirm', (req, res) => {
           } else {
             sendmail({
               from: 'ess@engr.uvic.ca',
-              to: results1.email,
+              to: results1[0].email,
               subject: '[DO-NOT-REPLY] ESS Locker Deregistration',
-              html: '<p>Hello there ' + results1.name + ',</p>'+
-              '<p>You have successfully deregistered locker ' + results1.number + ' in the ELW.</p>'+
+              html: '<p>Hello there ' + results1[0].name + ',</p>'+
+              '<p>You have successfully deregistered locker ' + results1[0].number + ' in the ELW.</p>'+
               '<p>Thank you for helping to ensure there are enough available lockers.</p>'
             }, function(err, reply) {
               return;
