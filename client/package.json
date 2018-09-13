@@ -31,5 +31,6 @@
     "gulp-uglify": "^3.0.1",
     "react-router-dom": "^4.3.1"
   },
-  "homepage": "http://ess.uvic.ca/lockers_react/"
+  "homepage": "http://ess.uvic.ca/lockers_react/",
+  "proxy": "http://localhost:5000/"
 }

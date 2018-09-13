@@ -6,7 +6,7 @@ const express = require('express');
 const sendmail = require('sendmail')();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 const RESET_TIMEOUT = process.env.LOCKER_RESET_TIME || 10000;
 const SQL_USER = process.env.LOCKER_SQL_USER || 'lockers';
 const SQL_PASSWORD = process.env.LOCKER_SQL_PASSWORD || 'no_password';
