@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-const API_URL = 'http://ess.uvic.ca:3001'
 
 class Renew extends Component {
   constructor(props) {
@@ -23,7 +22,7 @@ class Renew extends Component {
   }
 
   handleSubmit(event) {
-    fetch(API_URL+'/api/renew', {
+    fetch('/lockersapi/renew', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'

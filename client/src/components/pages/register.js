@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-const API_URL = 'http://ess.uvic.ca:3001'
 
 class Register extends Component {
   constructor(props) {
@@ -16,7 +15,7 @@ class Register extends Component {
   }
 
   getLockerOpts() {
-    fetch(API_URL+'/api/available', {
+    fetch('/lockersapi/available', {
       method: 'get',
       headers: {
         'Content-Type': 'application/json'
@@ -26,7 +25,7 @@ class Register extends Component {
         if (res.status === 200) {
           return res.json();
         } else {
-          console.log("Lockers req failed");
+          console.log('Lockers req failed (Code ' + res.status + ')');
           return [];
         }
       })
@@ -48,7 +47,7 @@ class Register extends Component {
   }
 
   handleSubmit(event) {
-    fetch(API_URL+'/api/new', {
+    fetch('/lockersapi/new', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-const API_URL = 'http://ess.uvic.ca:3001'
 
 class Deregister extends Component {
   constructor(props) {
@@ -27,7 +26,7 @@ class Deregister extends Component {
 
   handleSubmit(event) {
     console.log(this.state.codeValue);
-    fetch(API_URL+'/api/deregister/confirm', {
+    fetch('/lockersapi/deregister/confirm', {
       method: 'delete',
       headers: {
         'Content-Type': 'application/json'
@@ -44,7 +43,7 @@ class Deregister extends Component {
   }
 
   handleCode(event) {
-    fetch(API_URL+'/api/deregister/code', {
+    fetch('/lockersapi/deregister/code', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
