@@ -32,7 +32,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/api/available', (req, res) => {
+app.get('/lockersapi/available', (req, res) => {
   const query = sqlstring.format('SELECT number FROM ?? WHERE status = ?', SQL_TABLE, 'open');
   connection.query(query, (error, results, fields) => {
     if (error) {
@@ -43,7 +43,7 @@ app.get('/api/available', (req, res) => {
   });
 });
 
-app.post('/api/new', (req, res) => {
+app.post('/lockersapi/new', (req, res) => {
   if (req.body.name !== '' && req.body.email !== '' && req.body.locker !== '') {
 
     const query1 = sqlstring.format('SELECT * FROM ?? WHERE email = ?', SQL_TABLE, req.body.email);
@@ -82,7 +82,7 @@ app.post('/api/new', (req, res) => {
   }
 });
 
-app.post('/api/renew', (req, res) => {
+app.post('/lockersapi/renew', (req, res) => {
   if (req.body.email !== '') {
     const query = sqlstring.format('UPDATE ?? SET status = ? WHERE status = ? AND email = ?',
       [SQL_TABLE, 'closed', 'pending', req.body.email]);
@@ -112,7 +112,7 @@ app.post('/api/renew', (req, res) => {
   }
 });
 
-app.post('/api/deregister/code', (req, res) => {
+app.post('/lockersapi/deregister/code', (req, res) => {
   if (req.body.number !== '' && req.body.email !== '') {
     const query = sqlstring.format('SELECT email FROM ?? WHERE number = ?', SQL_TABLE, req.body.number);
     connection.query(query, (error, results, fields) => {
@@ -160,7 +160,7 @@ app.post('/api/deregister/code', (req, res) => {
   }
 });
 
-app.delete('/api/deregister/confirm', (req, res) => {
+app.delete('/lockersapi/deregister/confirm', (req, res) => {
   if (req.body.code !== '') {
     const query1 = sqlstring.format('SELECT * FROM ?? WHERE reset_code = ?', SQL_TABLE, req.body.code)
     connection.query(query, (error, results, fields) => {
