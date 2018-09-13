@@ -40,7 +40,9 @@ class Deregister extends Component {
       })
     })
       .then(res => {
-        if(res.status >= 500) {
+        if (res.status === 200) {
+          this.props.history.push('/deregister/thankyou');
+        } else if(res.status >= 500) {
           alert('An internal server error occurred, please try again later or contact the maintaner.');
         } else {
           res.text().then(text => alert(text));

@@ -69,7 +69,7 @@ app.post('/lockersapi/new', (req, res) => {
               '<p>You reservation will be valid until the beginning of next term, at which point you must renew it.</p>'+
               '<p>If you would like to free up the locker for someone else to use before '+
               'the start of next term, you may deregister it at the following link: </p>'+
-              '<p>http://ess.uvic.ca/lockers/deregister</p>'
+              '<p>http://ess.uvic.ca/lockers/#/deregister</p>'
             }, function(err, reply) {
               return;
             });
@@ -114,7 +114,7 @@ app.post('/lockersapi/renew', (req, res) => {
               '<p>You reservation will be valid until the beginning of next term, at which point you must renew it again.</p>'+
               '<p>If you would like to free up the locker for someone else to use before '+
               'the start of next term, you may deregister it at the following link: </p>'+
-              '<p>http://ess.uvic.ca/lockers/deregister</p>'
+              '<p>http://ess.uvic.ca/lockers/#/deregister</p>'
             }, function(err, reply) {
               return;
             });
