@@ -65,7 +65,7 @@ app.post('/lockersapi/new', (req, res) => {
               to: req.body.email,
               subject: '[DO-NOT-REPLY] ESS Locker Registration',
               html: '<p>Hello there ' + req.body.name + ',</p>'+
-              '<p>You have successfully registered locker ' + req.body.number + ' in the ELW.</p>'+
+              '<p>You have successfully registered locker ' + req.body.locker + ' in the ELW.</p>'+
               '<p>You reservation will be valid until the beginning of next term, at which point you must renew it.</p>'+
               '<p>If you would like to free up the locker for someone else to use before '+
               'the start of next term, you may deregister it at the following link: </p>'+
@@ -88,10 +88,10 @@ app.post('/lockersapi/new', (req, res) => {
 
 app.post('/lockersapi/renew', (req, res) => {
   if (req.body.email !== '') {
-    const query1 = sqlstring.format('SELECT * FROM ?? WHERE email = ? AND status = ?',
+    const query1 = sqlstring.format('SELECT name, number FROM ?? WHERE email = ? AND status = ?',
       [SQL_TABLE, req.body.email, 'pending']);
 
-    connection.query(query1, (error, results, fields) => {
+    connection.query(query1, (error, results1, fields) => {
       if (error) {
         console.log(error);
         res.status(500).send('Database query failed.');
@@ -100,7 +100,7 @@ app.post('/lockersapi/renew', (req, res) => {
         const query2 = sqlstring.format('UPDATE ?? SET status = ? WHERE status = ? AND email = ?',
           [SQL_TABLE, 'closed', 'pending', req.body.email]);
 
-        connection.query(query2, (error, results, fields) => {
+        connection.query(query2, (error, results2, fields) => {
           if (error) {
             console.log(error);
             res.status(500).send('Database query failed.');
@@ -109,8 +109,8 @@ app.post('/lockersapi/renew', (req, res) => {
               from: 'ess@engr.uvic.ca',
               to: req.body.email,
               subject: '[DO-NOT-REPLY] ESS Locker Renewal',
-              html: '<p>Hello there ' + req.body.name + ',</p>'+
-              '<p>You have successfully renewed locker ' + req.body.number + ' in the ELW.</p>'+
+              html: '<p>Hello there ' + results1.name + ',</p>'+
+              '<p>You have successfully renewed locker ' + results1.number + ' in the ELW.</p>'+
               '<p>You reservation will be valid until the beginning of next term, at which point you must renew it again.</p>'+
               '<p>If you would like to free up the locker for someone else to use before '+
               'the start of next term, you may deregister it at the following link: </p>'+
