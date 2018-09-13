@@ -47,7 +47,9 @@ app.get('/lockersapi/available', (req, res) => {
 app.post('/lockersapi/new', (req, res) => {
   if (req.body.name !== '' && req.body.email !== '' && req.body.locker !== '') {
 
-    const query1 = sqlstring.format('SELECT * FROM ?? WHERE email = ?', [SQL_TABLE, req.body.email]);
+    const query1 = sqlstring.format('SELECT * FROM ?? WHERE email = ? AND status = ?',
+      [SQL_TABLE, req.body.email, 'closed']);
+
     connection.query(query1, (error, results, fields) => {
       if(results.length === 0) {
         const query2 = sqlstring.format('UPDATE ?? SET name = ?, email = ?, submitted = NOW(), status = ? WHERE number = ?',
