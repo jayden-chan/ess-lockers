@@ -29,6 +29,7 @@ class App extends Component {
             <Route path='/register/thankyou' component={ThankYou} />
             <Route path='/deregister' component={Deregister} />
             <Route path='/renew' component={Renew} />
+            <Route path='/reregisterlocker' component={Renew} />
             <Route component={Lost} />
           </Switch>
         </div>

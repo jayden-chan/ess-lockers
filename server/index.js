@@ -45,8 +45,6 @@ app.get('/api/available', (req, res) => {
 app.post('/api/new', (req, res) => {
   if (req.body.name !== '' && req.body.email !== '' && req.body.locker !== '') {
 
-    let alreadyRegistered = false;
-
     const query1 = sqlstring.format('SELECT * FROM lockers WHERE email = ?', req.body.email);
     connection.query(query1, (error, results, fields) => {
       if(results.length === 0) {
@@ -68,8 +66,7 @@ app.post('/api/new', (req, res) => {
               'the start of next term, you may deregister it at the following link: </p>'+
               '<p>http://ess.uvic.ca/lockers/deregister</p>'
             }, function(err, reply) {
-              console.log(err && err.stack);
-              console.dir(reply);
+              return;
             });
             res.status(200).send('Locker registered successfully');
           }
@@ -104,8 +101,7 @@ app.post('/api/renew', (req, res) => {
           'the start of next term, you may deregister it at the following link: </p>'+
           '<p>http://ess.uvic.ca/lockers/deregister</p>'
         }, function(err, reply) {
-          console.log(err && err.stack);
-          console.dir(reply);
+          return;
         });
         res.status(200).send('Locker renewed successfully');
       }
@@ -143,8 +139,7 @@ app.post('/api/deregister/code', (req, res) => {
           '<p>Your code is: ' + resetCode + '</p>'+
           '<p>If you did not request this you may safely ignore this email.</p>';
         }, function(err, reply) {
-          console.log(err && err.stack);
-          console.dir(reply);
+          return;
         });
 
         var timer = setTimeout(() => {
@@ -188,8 +183,7 @@ app.delete('/api/deregister/confirm', (req, res) => {
               '<p>You have successfully deregistered locker ' + req.body.number + ' in the ELW.</p>'+
               '<p>Thank you for helping to ensure there are enough available lockers.</p>'
             }, function(err, reply) {
-              console.log(err && err.stack);
-              console.dir(reply);
+              return;
             });
             res.status(200).send('Locker successfully deregistered');
           }
