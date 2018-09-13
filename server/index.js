@@ -86,28 +86,41 @@ app.post('/lockersapi/new', (req, res) => {
 
 app.post('/lockersapi/renew', (req, res) => {
   if (req.body.email !== '') {
-    const query = sqlstring.format('UPDATE ?? SET status = ? WHERE status = ? AND email = ?',
-      [SQL_TABLE, 'closed', 'pending', req.body.email]);
+    const query1 = sqlstring.format('SELECT * FROM ?? WHERE email = ? AND status = ?',
+      [SQL_TABLE, req.body.email, 'pending']);
 
-    connection.query(query, (error, results, fields) => {
+    connection.query(query1, (error, results, fields) => {
       if (error) {
         console.log(error);
         res.status(500).send('Database query failed.');
-      } else {
-        sendmail({
-          from: 'ess@engr.uvic.ca',
-          to: req.body.email,
-          subject: '[DO-NOT-REPLY] ESS Locker Renewal',
-          html: '<p>Hello there ' + req.body.name + ',</p>'+
-          '<p>You have successfully renewed locker ' + req.body.number + ' in the ELW.</p>'+
-          '<p>You reservation will be valid until the beginning of next term, at which point you must renew it again.</p>'+
-          '<p>If you would like to free up the locker for someone else to use before '+
-          'the start of next term, you may deregister it at the following link: </p>'+
-          '<p>http://ess.uvic.ca/lockers/deregister</p>'
-        }, function(err, reply) {
-          return;
+      } else if(results.length === 1) {
+
+        const query2 = sqlstring.format('UPDATE ?? SET status = ? WHERE status = ? AND email = ?',
+          [SQL_TABLE, 'closed', 'pending', req.body.email]);
+
+        connection.query(query2, (error, results, fields) => {
+          if (error) {
+            console.log(error);
+            res.status(500).send('Database query failed.');
+          } else {
+            sendmail({
+              from: 'ess@engr.uvic.ca',
+              to: req.body.email,
+              subject: '[DO-NOT-REPLY] ESS Locker Renewal',
+              html: '<p>Hello there ' + req.body.name + ',</p>'+
+              '<p>You have successfully renewed locker ' + req.body.number + ' in the ELW.</p>'+
+              '<p>You reservation will be valid until the beginning of next term, at which point you must renew it again.</p>'+
+              '<p>If you would like to free up the locker for someone else to use before '+
+              'the start of next term, you may deregister it at the following link: </p>'+
+              '<p>http://ess.uvic.ca/lockers/deregister</p>'
+            }, function(err, reply) {
+              return;
+            });
+            res.status(200).send('Locker renewed successfully');
+          }
         });
-        res.status(200).send('Locker renewed successfully');
+      } else {
+        res.status(400).send('Specified locker is not up for renewal at this time.');
       }
     });
   } else {
@@ -118,12 +131,14 @@ app.post('/lockersapi/renew', (req, res) => {
 app.post('/lockersapi/deregister/code', (req, res) => {
   if (req.body.number !== '' && req.body.email !== '') {
     const query = sqlstring.format('SELECT email FROM ?? WHERE number = ?', [SQL_TABLE, req.body.number]);
+
     connection.query(query, (error, results, fields) => {
       if (error) {
         console.log(error);
         res.status(500).send('Database query failed.');
       } else if (results.length === 1 && results[0].email === req.body.email) {
         const resetCode = Math.floor(100000 + Math.random() * 900000);
+
         const query = sqlstring.format('UPDATE ?? SET reset_code = ? WHERE number = ?',
           [SQL_TABLE, resetCode, req.body.number]);
 
