@@ -7,7 +7,7 @@ const sendmail = require('sendmail')();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const RESET_TIMEOUT = process.env.LOCKER_RESET_TIME || 10000;
+const RESET_TIMEOUT = process.env.LOCKER_RESET_TIME || 900000;
 const SQL_USER = process.env.LOCKER_SQL_USER || 'lockers';
 const SQL_PASSWORD = process.env.LOCKER_SQL_PASSWORD || 'no_password';
 const SQL_TABLE = process.env.LOCKER_SQL_TABLE || 'lockers';
@@ -141,8 +141,8 @@ app.post('/lockersapi/deregister/code', (req, res) => {
       } else if (results.length === 1 && results[0].email === req.body.email) {
         const resetCode = Math.floor(100000 + Math.random() * 900000);
 
-        const query = sqlstring.format('UPDATE ?? SET reset_code = ? WHERE number = ?',
-          [SQL_TABLE, resetCode, req.body.number]);
+        const query = sqlstring.format('UPDATE ?? SET reset_code = ? WHERE number = ? AND email = ?',
+          [SQL_TABLE, resetCode, req.body.number, req.body.email]);
 
         connection.query(query, (error, results, fields) => {
           if (error) {
@@ -186,7 +186,7 @@ app.post('/lockersapi/deregister/code', (req, res) => {
 app.delete('/lockersapi/deregister/confirm', (req, res) => {
   if (req.body.code !== '') {
     const query1 = sqlstring.format('SELECT * FROM ?? WHERE reset_code = ?', [SQL_TABLE, req.body.code])
-    connection.query(query1, (error, results, fields) => {
+    connection.query(query1, (error, results1, fields) => {
       if (error) {
         console.log(error);
         res.status(500).send('Database query failed');
@@ -196,17 +196,17 @@ app.delete('/lockersapi/deregister/confirm', (req, res) => {
         const query2 = sqlstring.format('UPDATE ?? SET reset_code = ?, status = ? WHERE reset_code = ?',
           [SQL_TABLE, null, 'open', req.body.code]);
 
-        connection.query(query2, (error, results, fields) => {
+        connection.query(query2, (error, results2, fields) => {
           if (error) {
             console.log(error);
             res.status(500).send('Database query failed');
           } else {
             sendmail({
               from: 'ess@engr.uvic.ca',
-              to: req.body.email,
+              to: results1.email,
               subject: '[DO-NOT-REPLY] ESS Locker Deregistration',
-              html: '<p>Hello there ' + req.body.name + ',</p>'+
-              '<p>You have successfully deregistered locker ' + req.body.number + ' in the ELW.</p>'+
+              html: '<p>Hello there ' + results1.name + ',</p>'+
+              '<p>You have successfully deregistered locker ' + results1.number + ' in the ELW.</p>'+
               '<p>Thank you for helping to ensure there are enough available lockers.</p>'
             }, function(err, reply) {
               return;
