@@ -34,7 +34,6 @@ class App extends Component {
             <Route path='/deregister/thankyou' component={DeregDone} />
             <Route exact path='/renew' component={Renew} />
             <Route path='/renew/thankyou' component={RenewDone} />
-            <Route exact path='/admin' component={Admin} />
             <Route component={Lost} />
           </Switch>
         </div>

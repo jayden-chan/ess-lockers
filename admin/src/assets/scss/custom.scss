@@ -1,0 +1,19 @@
+@import '_config.scss';
+
+$theme-colors: (
+  "primary": $ess_orange,
+  "danger": #ff4136
+);
+
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+header {
+    .navbar-dark .navbar-nav .nav-link {
+        font-size: 16px;
+    }
+}
+
+.lead {
+    font-weight: normal;
+}
+
