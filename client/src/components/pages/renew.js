@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const API_KEY = 'placeholder';
+const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
 
 class Renew extends Component {
   constructor(props) {
@@ -24,6 +24,7 @@ class Renew extends Component {
   }
 
   handleSubmit(event) {
+    // Send a request to the API to renew the locker
     fetch('/lockersapi/renew', {
       method: 'post',
       mode: 'same-origin',
@@ -36,6 +37,8 @@ class Renew extends Component {
       })
     })
       .then(res => {
+        // If the request succeded, show the thank you page.
+        // Otherwise show the error
         if (res.status === 200) {
           this.props.history.push('/renew/thankyou');
         } else if (res.status >= 500) {

@@ -6,6 +6,8 @@ const express = require('express');
 const sendmail = require('sendmail')();
 
 const app = express();
+
+// Load settings from env vars
 const PORT = process.env.PORT || 3000;
 const RESET_TIMEOUT = process.env.LOCKER_RESET_TIME || 900000;
 const SQL_USER = process.env.LOCKER_SQL_USER || 'lockers';
@@ -13,6 +15,7 @@ const SQL_PASSWORD = process.env.LOCKER_SQL_PASSWORD || 'no_password';
 const SQL_TABLE = process.env.LOCKER_SQL_TABLE || 'lockers';
 
 app.use((req, res, next) => {
+  // Create a connection to the SQL server
   global.connection = mysql.createPool({
     host: 'localhost',
     user: SQL_USER,
@@ -25,7 +28,9 @@ app.use((req, res, next) => {
 // Middleware
 app.use(bodyParser.json());
 app.use((req, res, next) => {
-  if(req.headers.authorization === 'placeholder') {
+  // If the request is coming from the official app, process it.
+  // Otherwise deny the request
+  if(req.headers.authorization === 'LOCKERS_API_KEY_PLACEHOLDER') {
     next();
   } else {
     res.status(403).send('Forbidden');

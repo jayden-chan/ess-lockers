@@ -1,5 +1,7 @@
 'use strict';
 
+// This gulp file automatically compiles the scss to css
+
 var gulp      = require('gulp');
 var sass      = require('gulp-sass');
 var minifyCSS = require('gulp-clean-css');

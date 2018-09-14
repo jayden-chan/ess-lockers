@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const API_KEY = 'placeholder';
+const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
 
 class Register extends Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class Register extends Component {
   }
 
   getLockerOpts() {
+    // Fetch the available locker numbers from the API
     fetch('/lockersapi/available', {
       method: 'get',
       mode: 'same-origin',
@@ -26,6 +27,8 @@ class Register extends Component {
       }
     })
       .then(res => {
+        // If the request succeded, parse the JSON data.
+        // Otherwise show an empty list
         if (res.status === 200) {
           return res.json();
         } else {
@@ -51,6 +54,7 @@ class Register extends Component {
   }
 
   handleSubmit(event) {
+    // Send a request to the API to create a new locker
     fetch('/lockersapi/new', {
       method: 'post',
       mode: 'same-origin',
@@ -65,6 +69,8 @@ class Register extends Component {
       })
     })
       .then(res => {
+        // If the request succeeded, show the thank you page.
+        // Otherwise show the error
         if (res.status === 200) {
           this.props.history.push('/register/thankyou');
         } else if (res.status >= 500) {

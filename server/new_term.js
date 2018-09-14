@@ -1,7 +1,7 @@
 const prompts = require('prompts');
 const sqlstring = require('sqlstring');
 const mysql = require('mysql');
-// const sendmail = require('sendmail')();
+const sendmail = require('sendmail')();
 
 const SQL_USER = process.env.LOCKER_SQL_USER || 'lockers';
 const SQL_PASSWORD = process.env.LOCKER_SQL_PASSWORD || 'no_password';

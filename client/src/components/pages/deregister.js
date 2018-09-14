@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const API_KEY = 'placeholder';
+const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
 
 class Deregister extends Component {
   constructor(props) {
@@ -28,6 +28,9 @@ class Deregister extends Component {
 
   handleSubmit(event) {
     console.log(this.state.codeValue);
+
+    // Send the code to the API and have it delete the locker
+    // if the code is correct
     fetch('/lockersapi/deregister/confirm', {
       method: 'delete',
       mode: 'same-origin',
@@ -40,6 +43,8 @@ class Deregister extends Component {
       })
     })
       .then(res => {
+        // If the request was successful, redirect to thank you page,
+        // otherwise show what the error was
         if (res.status === 200) {
           this.props.history.push('/deregister/thankyou');
         } else if(res.status >= 500) {
@@ -47,12 +52,14 @@ class Deregister extends Component {
         } else {
           res.text().then(text => alert(text));
         }
-      })
+      });
 
     event.preventDefault();
   }
 
   handleCode(event) {
+    // Send an API request to have a locker reset code genereated
+    // and emailed to the user
     fetch('/lockersapi/deregister/code', {
       method: 'post',
       mode: 'same-origin',
@@ -66,6 +73,7 @@ class Deregister extends Component {
       })
     })
       .then(res => {
+        // If the request succeeded, let the user know
         if(res.status >= 500) {
           alert('An internal server error occurred, please try again later or contact the maintaner.');
         } else {
