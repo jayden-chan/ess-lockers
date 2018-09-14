@@ -20,6 +20,6 @@
   },
   "author": "Jayden Chan <jaydencn7@gmail.com> (https://github.com/jayden-chan/)",
   "license": "GPL-3.0",
-  "homepage": "http://ess.uvic.ca/lockers/",
+  "homepage": "http://ess.uvic.ca/lockers/admin",
   "proxy": "http://localhost:3001/"
 }
