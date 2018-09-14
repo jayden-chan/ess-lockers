@@ -3,12 +3,12 @@ const sqlstring = require('sqlstring');
 const mysql = require('mysql');
 const sha256 = require('js-sha256').sha256;
 const express = require('express');
-const sendmail = require('sendmail')();
+const emailer = require('./emailer.js')
 
 const app = express();
 
 // Load settings from env vars
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const RESET_TIMEOUT = process.env.LOCKER_RESET_TIME || 900000;
 const SQL_USER = process.env.LOCKER_SQL_USER || 'lockers';
 const SQL_PASSWORD = process.env.LOCKER_SQL_PASSWORD || 'no_password';
@@ -49,6 +49,30 @@ app.get('/lockersapi/available', (req, res) => {
   });
 });
 
+app.get('/lockersapi/summary/all', (req, res) => {
+  const query = sqlstring.format('SELECT * FROM ??', SQL_TABLE);
+  connection.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send('Database query failed.');
+    } else {
+      res.status(200).send(JSON.stringify(results));
+    }
+  });
+});
+
+app.get('/lockersapi/summary/busted', (req, res) => {
+  const query = sqlstring.format('SELECT * FROM ?? WHERE status = ?', [SQL_TABLE, 'busted']);
+  connection.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send('Database query failed.');
+    } else {
+      res.status(200).send(JSON.stringify(results));
+    }
+  });
+});
+
 app.post('/lockersapi/new', (req, res) => {
   if (req.body.name !== '' && req.body.email !== '' && req.body.locker !== '') {
 
@@ -65,19 +89,7 @@ app.post('/lockersapi/new', (req, res) => {
             console.log(error);
             res.status(500).send('Database query failed.');
           } else {
-            sendmail({
-              from: 'ess@engr.uvic.ca',
-              to: req.body.email,
-              subject: '[DO-NOT-REPLY] ESS Locker Registration',
-              html: '<p>Hello there ' + req.body.name + ',</p>'+
-              '<p>You have successfully registered locker ' + req.body.locker + ' in the ELW.</p>'+
-              '<p>You reservation will be valid until the beginning of next term, at which point you must renew it.</p>'+
-              '<p>If you would like to free up the locker for someone else to use before '+
-              'the start of next term, you may deregister it at the following link: </p>'+
-              '<p>http://ess.uvic.ca/lockers/#/deregister</p>'
-            }, function(err, reply) {
-              return;
-            });
+            emailer.sendConfirmation(req.body.email, req.body.name, req.body.locker);
             res.status(200).send('Locker registered successfully');
           }
         });
@@ -110,19 +122,7 @@ app.post('/lockersapi/renew', (req, res) => {
             console.log(error);
             res.status(500).send('Database query failed.');
           } else {
-            sendmail({
-              from: 'ess@engr.uvic.ca',
-              to: req.body.email,
-              subject: '[DO-NOT-REPLY] ESS Locker Renewal',
-              html: '<p>Hello there ' + results1[0].name + ',</p>'+
-              '<p>You have successfully renewed locker ' + results1[0].number + ' in the ELW.</p>'+
-              '<p>You reservation will be valid until the beginning of next term, at which point you must renew it again.</p>'+
-              '<p>If you would like to free up the locker for someone else to use before '+
-              'the start of next term, you may deregister it at the following link: </p>'+
-              '<p>http://ess.uvic.ca/lockers/#/deregister</p>'
-            }, function(err, reply) {
-              return;
-            });
+            emailer.sendRenewalConf(req.body.email, results1[0].name, results1[0].number);
             res.status(200).send('Locker renewed successfully');
           }
         });
@@ -154,17 +154,7 @@ app.post('/lockersapi/deregister/code', (req, res) => {
             console.log(error);
             res.status(500).send('Database query failed');
           } else {
-            sendmail({
-              from: 'ess@engr.uvic.ca',
-              to: req.body.email,
-              subject: '[DO-NOT-REPLY] ESS Locker Deregistration',
-              html: '<p>Hello there,</p>'+
-              '<p>You are receiving this email because you requested a locker registration removal.</p>'+
-              '<p>Your code is: ' + resetCode + '</p>'+
-              '<p>If you did not request this you may safely ignore this email.</p>'
-            }, function(err, reply) {
-              return;
-            });
+            emailer.sendDeregCode(req.body.email, resetCode);
 
             var timer = setTimeout(() => {
               const query = sqlstring.format('UPDATE ?? SET reset_code = NULL', SQL_TABLE);
@@ -206,16 +196,7 @@ app.delete('/lockersapi/deregister/confirm', (req, res) => {
             console.log(error);
             res.status(500).send('Database query failed');
           } else {
-            sendmail({
-              from: 'ess@engr.uvic.ca',
-              to: results1[0].email,
-              subject: '[DO-NOT-REPLY] ESS Locker Deregistration',
-              html: '<p>Hello there ' + results1[0].name + ',</p>'+
-              '<p>You have successfully deregistered locker ' + results1[0].number + ' in the ELW.</p>'+
-              '<p>Thank you for helping to ensure there are enough available lockers.</p>'
-            }, function(err, reply) {
-              return;
-            });
+            emailer.sendDeregConf(results1.email, results1.name, results1.number);
             res.status(200).send('Locker successfully deregistered');
           }
         });

@@ -6,7 +6,7 @@ class DeregDone extends Component {
       <div className="container">
         <div className="jumbotron">
           <h1 className="display-4">Success</h1>
-          <p>Thank you for using our locker service</p>
+          <p>Your locker reservation has been removed. Thank you for using our service</p>
         </div>
       </div>
     );

@@ -15,6 +15,7 @@ import Lost from './components/pages/404.js';
 import ThankYou from './components/pages/thankyou.js';
 import RenewDone from './components/pages/renewDone.js';
 import DeregDone from './components/pages/deregDone.js';
+import Admin from './components/pages/admin.js';
 
 import './assets/css/custom.min.css';
 
@@ -33,6 +34,7 @@ class App extends Component {
             <Route path='/deregister/thankyou' component={DeregDone} />
             <Route exact path='/renew' component={Renew} />
             <Route path='/renew/thankyou' component={RenewDone} />
+            <Route exact path='/admin' component={Admin} />
             <Route component={Lost} />
           </Switch>
         </div>

@@ -27,8 +27,6 @@ class Deregister extends Component {
   }
 
   handleSubmit(event) {
-    console.log(this.state.codeValue);
-
     // Send the code to the API and have it delete the locker
     // if the code is correct
     fetch('/lockersapi/deregister/confirm', {
