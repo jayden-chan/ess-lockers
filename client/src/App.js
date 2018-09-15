@@ -15,7 +15,6 @@ import Lost from './components/pages/404.js';
 import ThankYou from './components/pages/thankyou.js';
 import RenewDone from './components/pages/renewDone.js';
 import DeregDone from './components/pages/deregDone.js';
-import Admin from './components/pages/admin.js';
 
 import './assets/css/custom.min.css';
 
