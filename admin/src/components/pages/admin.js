@@ -16,6 +16,7 @@ class Admin extends Component {
   }
 
   fetchTableData(type) {
+    // Fetch the lockers DB
     fetch('/lockersapi/summary/' + type, {
       method: 'get',
       mode: 'same-origin',
@@ -75,6 +76,7 @@ class Admin extends Component {
         </thead>
         <tbody>
           {data.map(entry => {
+            // Filter the locker table based on the contents of the search bar
             const containsName = entry.name.toLowerCase().includes(this.state.searchNameString.toLowerCase());
             const containsStatus = entry.status.toLowerCase().includes(this.state.searchNameString.toLowerCase());
             let containsEmail = false;
