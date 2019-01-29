@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 app.use((req, res, next) => {
   // If the request is coming from the official app, process it.
   // Otherwise deny the request
-  if(req.headers.authorization === 'LOCKERS_API_KEY_PLACEHOLDER') {
+  if (req.headers.authorization === 'LOCKERS_API_KEY_PLACEHOLDER') {
     next();
   } else {
     res.status(403).send('Forbidden');
@@ -79,7 +79,7 @@ app.post('/lockersapi/new', (req, res) => {
       [SQL_TABLE, req.body.email, 'closed']);
 
     connection.query(query1, (error, results, fields) => {
-      if(results.length === 0) {
+      if (results.length === 0) {
         const query2 = sqlstring.format('UPDATE ?? SET name = ?, email = ?, submitted = NOW(), status = ? WHERE number = ?',
           [SQL_TABLE, req.body.name, req.body.email, 'closed', req.body.locker]);
 
@@ -111,7 +111,7 @@ app.post('/lockersapi/renew', (req, res) => {
       if (error) {
         console.log(error);
         res.status(500).send('Database query failed.');
-      } else if(results1.length === 1) {
+      } else if (results1.length === 1) {
 
         const query2 = sqlstring.format('UPDATE ?? SET status = ? WHERE status = ? AND email = ?',
           [SQL_TABLE, 'closed', 'pending', req.body.email]);

@@ -28,6 +28,9 @@
         "ignoreRestSiblings": false
       }
     ],
+    "keyword-spacing": [
+      "warn"
+    ],
     "comma-dangle": [
       "error",
       "never"

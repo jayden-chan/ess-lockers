@@ -25,7 +25,7 @@ const main = async () => {
     message: 'Are you sure you want to trigger the new term actions?\n\nThis will set all active registrations to \'pending\' mode\nand send everyone an email requesting registration renewal [Y/n]'
   });
 
-  if(response.choice !== 'Y' && response.choice !== 'y') {
+  if (response.choice !== 'Y' && response.choice !== 'y') {
     console.log('Exiting');
     return;
   }
@@ -41,7 +41,7 @@ const main = async () => {
   console.log('Updating registration statuses...');
   const query = sqlstring.format('UPDATE lockers SET status = ? WHERE status = ?', ['pending', 'closed']);
   connection.query(query, (error, results, fields) => {
-    if(error) {
+    if (error) {
       logError(error, 'Error occurred while setting locker status');
     }
     else {
@@ -49,7 +49,7 @@ const main = async () => {
 
       const query2 = sqlstring.format('SELECT email, name FROM lockers WHERE status = ?', 'pending');
       connection.query(query2, (error, results, fields) => {
-        if(error) {
+        if (error) {
           logError('Error occurred while collecting entries for email list');
         } else {
           console.log('Sending emails. This may take a while...');
