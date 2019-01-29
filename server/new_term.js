@@ -6,6 +6,18 @@ const sendmail = require('sendmail')();
 const SQL_USER = process.env.LOCKER_SQL_USER || 'lockers';
 const SQL_PASSWORD = process.env.LOCKER_SQL_PASSWORD || 'no_password';
 
+const logError = (error, message) => {
+  console.log(`[WARNING]: ${message}`);
+  console.log();
+  console.log(error);
+  console.log();
+  console.log();
+  console.log('[WARNING]: It is possible that the lockers database is mildly broken right now.');
+  console.log();
+  console.log('Please contact the current director of IT or the creator of this '+
+    'script (jaydencn7@gmail.com) to get it fixed');
+};
+
 const main = async () => {
   let response = await prompts({
     type: 'text',
@@ -18,22 +30,19 @@ const main = async () => {
     return;
   }
 
+  console.log('Connecting to database...');
   const connection = mysql.createPool({
     host: 'localhost',
     user: SQL_USER,
     password: SQL_PASSWORD,
-    database: 'lockers2011',
+    database: 'lockers2011'
   });
 
   console.log('Updating registration statuses...');
   const query = sqlstring.format('UPDATE lockers SET status = ? WHERE status = ?', ['pending', 'closed']);
   connection.query(query, (error, results, fields) => {
     if(error) {
-      console.log('[WARNING]: Error occurred while updating statuses:\n');
-      console.log(error);
-      console.log('\n\n[WARNING]: It is likely that the lockers database is mildly broken right now.');
-      console.log('Please contact the current director of IT or the creator of this '+
-        'script (jaydencn7@gmail.com) to get it fixed');
+      logError(error, 'Error occurred while setting locker status');
     }
     else {
       console.log('Done');
@@ -41,11 +50,7 @@ const main = async () => {
       const query2 = sqlstring.format('SELECT email, name FROM lockers WHERE status = ?', 'pending');
       connection.query(query2, (error, results, fields) => {
         if(error) {
-          console.log('[WARNING]: Error occurred while updating statuses:\n');
-          console.log(error);
-          console.log('\n\n[WARNING]: It is likely that the lockers database is mildly broken right now.');
-          console.log('Please contact the current director of IT or the creator of this '+
-            'script (jaydencn7@gmail.com) to get it fixed');
+          logError('Error occurred while collecting entries for email list');
         } else {
           console.log('Sending emails. This may take a while...');
 
@@ -55,8 +60,8 @@ const main = async () => {
               to: row.email,
               subject: '[DO-NOT-REPLY] Action Required: ESS Locker Reservation',
               html: '<p>Hello there ' + row.name + ',</p>'+
-              '<p>You are recieving this email because you have a locker reservation in our system.</p>'+
-              '<p>As you may know, at the beginning of each term we require all existing locker reservations to be renewed. '+\
+              '<p>You are receiving this email because you have a locker reservation in our system.</p>'+
+              '<p>As you may know, at the beginning of each term we require all existing locker reservations to be renewed. '+
               'This is to reduce the number of abandoned/forgotten lockers and to help ensure that there are enough free '+
               'lockers for everyone. If you would like to continue using your locker, please visit the link below:</p>'+
               '<p>http://ess.uvic.ca/lockers/renew</p>'+
@@ -67,6 +72,9 @@ const main = async () => {
               'of four months after which they will be disposed of. If you are unable to make this deadline '+
               'please contact us and we\'d be happy to hold on to your things longer.</p>'
             }, function(err, reply) {
+              if (err) {
+                logError(err, 'Error occurred while sending emails');
+              }
               return;
             });
           });
@@ -74,6 +82,6 @@ const main = async () => {
       });
     }
   });
-}
+};
 
 main();

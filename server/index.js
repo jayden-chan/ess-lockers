@@ -1,9 +1,8 @@
 const bodyParser = require('body-parser');
 const sqlstring = require('sqlstring');
 const mysql = require('mysql');
-const sha256 = require('js-sha256').sha256;
 const express = require('express');
-const emailer = require('./emailer.js')
+const emailer = require('./emailer.js');
 
 const app = express();
 
@@ -20,7 +19,7 @@ app.use((req, res, next) => {
     host: 'localhost',
     user: SQL_USER,
     password: SQL_PASSWORD,
-    database: 'lockers2011',
+    database: 'lockers2011'
   });
   next();
 });
@@ -156,7 +155,7 @@ app.post('/lockersapi/deregister/code', (req, res) => {
           } else {
             emailer.sendDeregCode(req.body.email, resetCode);
 
-            var timer = setTimeout(() => {
+            setTimeout(() => {
               const query = sqlstring.format('UPDATE ?? SET reset_code = NULL', SQL_TABLE);
               connection.query(query, (error, results, fields) => {
                 if (error) {
@@ -180,7 +179,7 @@ app.post('/lockersapi/deregister/code', (req, res) => {
 
 app.delete('/lockersapi/deregister/confirm', (req, res) => {
   if (req.body.code !== '') {
-    const query1 = sqlstring.format('SELECT * FROM ?? WHERE reset_code = ?', [SQL_TABLE, req.body.code])
+    const query1 = sqlstring.format('SELECT * FROM ?? WHERE reset_code = ?', [SQL_TABLE, req.body.code]);
     connection.query(query1, (error, results1, fields) => {
       if (error) {
         console.log(error);
