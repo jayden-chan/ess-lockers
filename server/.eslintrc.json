@@ -14,7 +14,10 @@
     ],
     "quotes": [
       "error",
-      "single"
+      "single",
+      {
+        "allowTemplateLiterals": true
+      }
     ],
     "semi": [
       "error",
@@ -24,7 +27,7 @@
       "warn",
       {
         "vars": "all",
-        "args": "after-used",
+        "args": "none",
         "ignoreRestSiblings": false
       }
     ],

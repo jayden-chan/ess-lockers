@@ -1,10 +1,8 @@
 const bodyParser = require('body-parser');
 const sqlstring = require('sqlstring');
 const mysql = require('mysql');
-const express = require('express');
+const app = require('express')();
 const emailer = require('./emailer.js');
-
-const app = express();
 
 // Load settings from env vars
 const PORT = process.env.PORT || 3001;
