@@ -90,7 +90,7 @@ exports.sendRenewalRequest = (email, name) => {
     'As you may know, at the beginning of each term we require all existing locker reservations to be renewed. '+
     'This is to reduce the number of abandoned/forgotten lockers and to help ensure that there are enough free '+
     'lockers for everyone. If you would like to continue using your locker, please visit the link below:</p>'+
-    '<p>http://ess.uvic.ca/lockers/renew</p>'+
+    '<p>http://ess.uvic.ca/lockers/#/renew</p>'+
     '<p>If you no longer need your locker and would like to make it available this term, please remember '+
     'to remove your belongings and lock. Your reservation will automatically be removed if you do not renew it '+
     'within one week. If you do not renew your locker, your lock will be cut during reading break (Feb 18-22), and you '+
