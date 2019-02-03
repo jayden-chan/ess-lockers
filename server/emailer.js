@@ -93,10 +93,10 @@ exports.sendRenewalRequest = (email, name) => {
     '<p>http://ess.uvic.ca/lockers/renew</p>'+
     '<p>If you no longer need your locker and would like to make it available this term, please remember '+
     'to remove your belongings and lock. Your reservation will automatically be removed if you do not renew it '+
-    'within one week. If you do not renew your locker, your lock will be cut at the end of the month, and you '+
-    'can retrieve your locker\'s contents from the ESS office (ELW B206). Items will be saved for a minimum '+
-    'of four months after which they will be disposed of. If you are unable to make this deadline '+
-    'please contact us and we\'d be happy to hold on to your things longer.</p>'
+    'within one week. If you do not renew your locker, your lock will be cut during reading break (Feb 18-22), and you '+
+    'can retrieve your locker\'s contents from the ESS office (ELW 206). Items will be saved for a minimum '+
+    'of two weeks after which they will be disposed of. If you are unable to make this deadline '+
+    'please contact us (essbtec@uvic.ca) and we\'d be happy to hold on to your things longer.</p>'
   }, (err, reply) => {
     if (err) {
       console.log('[WARNING]: Error sending emails');
