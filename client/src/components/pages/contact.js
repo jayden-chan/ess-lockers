@@ -7,7 +7,7 @@ class Contact extends Component {
         <div className="jumbotron">
           <h1 className="display-4">About / Contact</h1>
           <p>Lockers system maintainer: <a href="mailto:jaydencn7@gmail.com">Jayden Chan</a></p>
-          <p>ESS Director of IT: <a href="mailto:essatec@uvic.ca">Helen Spry</a></p>
+          <p>ESS Director of IT: <a href="mailto:essbtec@uvic.ca">Biarki Weeks</a></p>
         </div>
       </div>
     );
