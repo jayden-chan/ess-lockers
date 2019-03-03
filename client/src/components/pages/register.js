@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
-
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +20,6 @@ class Register extends Component {
       method: 'get',
       mode: 'same-origin',
       headers: {
-        "Authorization": API_KEY,
         'Content-Type': 'application/json'
       }
     })
@@ -59,7 +56,6 @@ class Register extends Component {
       method: 'post',
       mode: 'same-origin',
       headers: {
-        "Authorization": API_KEY,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({

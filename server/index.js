@@ -24,15 +24,6 @@ app.use((req, res, next) => {
 
 // Middleware
 app.use(bodyParser.json());
-app.use((req, res, next) => {
-  // If the request is coming from the official app, process it.
-  // Otherwise deny the request
-  if (req.headers.authorization === 'LOCKERS_API_KEY_PLACEHOLDER') {
-    next();
-  } else {
-    res.status(403).send('Forbidden');
-  }
-});
 
 app.get('/lockersapi/available', (req, res) => {
   const query = sqlstring.format('SELECT number FROM ?? WHERE status = ?', [SQL_TABLE, 'open']);

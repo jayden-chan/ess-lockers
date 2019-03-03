@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
-
 class Deregister extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +31,6 @@ class Deregister extends Component {
       method: 'delete',
       mode: 'same-origin',
       headers: {
-        "Authorization": API_KEY,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -62,7 +59,6 @@ class Deregister extends Component {
       method: 'post',
       mode: 'same-origin',
       headers: {
-        "Authorization": API_KEY,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
