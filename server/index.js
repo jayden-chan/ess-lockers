@@ -6,10 +6,10 @@ const emailer = require('./emailer.js');
 
 // Load settings from env vars
 const PORT = process.env.PORT || 3001;
-const RESET_TIMEOUT = process.env.LOCKER_RESET_TIME || 900000;
-const SQL_USER = process.env.LOCKER_SQL_USER || 'lockers';
-const SQL_PASSWORD = process.env.LOCKER_SQL_PASSWORD || 'no_password';
-const SQL_TABLE = process.env.LOCKER_SQL_TABLE || 'lockers';
+const RESET_TIMEOUT = process.env.LOCKERS_RESET_TIME || 900000;
+const SQL_USER = process.env.LOCKERS_SQL_USER || 'lockers';
+const SQL_PASSWORD = process.env.LOCKERS_SQL_PASSWORD || 'no_password';
+const SQL_TABLE = process.env.LOCKERS_SQL_TABLE || 'lockers';
 const API_KEY = process.env.LOCKERS_API_KEY || 'no_key';
 
 app.use((req, res, next) => {
