@@ -10,6 +10,7 @@ const RESET_TIMEOUT = process.env.LOCKER_RESET_TIME || 900000;
 const SQL_USER = process.env.LOCKER_SQL_USER || 'lockers';
 const SQL_PASSWORD = process.env.LOCKER_SQL_PASSWORD || 'no_password';
 const SQL_TABLE = process.env.LOCKER_SQL_TABLE || 'lockers';
+const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
 
 app.use((req, res, next) => {
   // Create a connection to the SQL server
@@ -38,6 +39,10 @@ app.get('/lockersapi/available', (req, res) => {
 });
 
 app.get('/lockersapi/summary/all', (req, res) => {
+  if (req.headers.authorization !== API_KEY) {
+    res.status(403).send('Unauthorized');
+  }
+
   const query = sqlstring.format('SELECT * FROM ??', SQL_TABLE);
   connection.query(query, (error, results, fields) => {
     if (error) {
@@ -50,6 +55,10 @@ app.get('/lockersapi/summary/all', (req, res) => {
 });
 
 app.get('/lockersapi/summary/busted', (req, res) => {
+  if (req.headers.authorization !== API_KEY) {
+    res.status(403).send('Unauthorized');
+  }
+
   const query = sqlstring.format('SELECT * FROM ?? WHERE status = ?', [SQL_TABLE, 'busted']);
   connection.query(query, (error, results, fields) => {
     if (error) {
