@@ -1,3 +1,5 @@
+/* global connection */
+
 const bodyParser = require('body-parser');
 const sqlstring = require('sqlstring');
 const mysql = require('mysql');
@@ -18,7 +20,7 @@ app.use((req, res, next) => {
     host: 'localhost',
     user: SQL_USER,
     password: SQL_PASSWORD,
-    database: 'lockers2011'
+    database: 'lockers2011',
   });
   next();
 });
@@ -62,8 +64,10 @@ app.post('/lockersapi/new', (req, res) => {
 
     connection.query(query1, (error, results, fields) => {
       if (results.length === 0) {
-        const query2 = sqlstring.format('UPDATE ?? SET name = ?, email = ?, submitted = NOW(), status = ? WHERE number = ?',
-          [SQL_TABLE, req.body.name, req.body.email, 'closed', req.body.locker]);
+        const query2 = sqlstring.format(
+          'UPDATE ?? SET name = ?, email = ?, submitted = NOW(), status = ? WHERE number = ?',
+          [SQL_TABLE, req.body.name, req.body.email, 'closed', req.body.locker]
+        );
 
         connection.query(query2, (error, results, fields) => {
           if (error) {
@@ -118,7 +122,10 @@ app.post('/lockersapi/renew', (req, res) => {
 
 app.post('/lockersapi/deregister/code', (req, res) => {
   if (req.body.number !== '' && req.body.email !== '') {
-    const query = sqlstring.format('SELECT email FROM ?? WHERE number = ? AND status <> ?', [SQL_TABLE, req.body.number, 'open']);
+    const query = sqlstring.format(
+      'SELECT email FROM ?? WHERE number = ? AND status = ?', 
+      [SQL_TABLE, req.body.number, 'open']
+    );
 
     connection.query(query, (error, results, fields) => {
       if (error) {
@@ -127,8 +134,10 @@ app.post('/lockersapi/deregister/code', (req, res) => {
       } else if (results.length === 1 && results[0].email === req.body.email) {
         const resetCode = Math.floor(100000 + Math.random() * 900000);
 
-        const query = sqlstring.format('UPDATE ?? SET reset_code = ? WHERE number = ? AND email = ?',
-          [SQL_TABLE, resetCode, req.body.number, req.body.email]);
+        const query = sqlstring.format(
+          'UPDATE ?? SET reset_code = ? WHERE number = ? AND email = ?',
+          [SQL_TABLE, resetCode, req.body.number, req.body.email]
+        );
 
         connection.query(query, (error, results, fields) => {
           if (error) {
@@ -161,7 +170,10 @@ app.post('/lockersapi/deregister/code', (req, res) => {
 
 app.delete('/lockersapi/deregister/confirm', (req, res) => {
   if (req.body.code !== '') {
-    const query1 = sqlstring.format('SELECT * FROM ?? WHERE reset_code = ?', [SQL_TABLE, req.body.code]);
+    const query1 = sqlstring.format(
+      'SELECT * FROM ?? WHERE reset_code = ?', [SQL_TABLE, req.body.code]
+    );
+
     connection.query(query1, (error, results1, fields) => {
       if (error) {
         console.log(error);
@@ -169,8 +181,11 @@ app.delete('/lockersapi/deregister/confirm', (req, res) => {
       } else if (results1.length !== 1) {
         res.status(400).send('Invalid reset code. Please try again later');
       } else {
-        const query2 = sqlstring.format('UPDATE ?? SET reset_code = ?, status = ? WHERE reset_code = ?',
-          [SQL_TABLE, null, 'open', req.body.code]);
+
+        const query2 = sqlstring.format(
+          'UPDATE ?? SET reset_code = ?, status = ? WHERE reset_code = ?',
+          [SQL_TABLE, null, 'open', req.body.code]
+        );
 
         connection.query(query2, (error, results2, fields) => {
           if (error) {
