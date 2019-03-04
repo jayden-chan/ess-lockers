@@ -1,7 +1,7 @@
 {
   "extends": "eslint:recommended",
   "parserOptions": {
-    "ecmaVersion": 2018
+    "ecmaVersion": 2019
   },
   "env": {
     "es6": true,
@@ -9,18 +9,21 @@
   },
   "rules": {
     "indent": [
-      "error",
-      2
+      "warn",
+      2,
+      {
+        "SwitchCase": 1
+      }
     ],
     "quotes": [
-      "error",
+      "warn",
       "single",
       {
         "allowTemplateLiterals": true
       }
     ],
     "semi": [
-      "error",
+      "warn",
       "always"
     ],
     "no-unused-vars": [
@@ -35,8 +38,8 @@
       "warn"
     ],
     "comma-dangle": [
-      "error",
-      "never"
+      "warn",
+      "always"
     ],
     "no-cond-assign": [
       "error",
