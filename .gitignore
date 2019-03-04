@@ -27,3 +27,4 @@ yarn-error.log*
 # vim swap files
 *.swp
 admin/node_modules
+pm2.config.js

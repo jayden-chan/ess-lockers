@@ -1,9 +1,8 @@
 const sendmail = require('sendmail')();
-const ENVIRONMENT = 'dev';
 
 exports.sendConfirmation = (email, name, number) => {
-  if (ENVIRONMENT === 'dev') {
-    console.log('Env set to dev, not sending email');
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('Env not set to production, not sending email');
     return;
   }
 
@@ -23,8 +22,8 @@ exports.sendConfirmation = (email, name, number) => {
 };
 
 exports.sendRenewalConf = (email, name, number) => {
-  if (ENVIRONMENT === 'dev') {
-    console.log('Env set to dev, not sending email');
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('Env not set to production, not sending email');
     return;
   }
 
@@ -44,8 +43,8 @@ exports.sendRenewalConf = (email, name, number) => {
 };
 
 exports.sendDeregCode = (email, code) => {
-  if (ENVIRONMENT === 'dev') {
-    console.log('Env set to dev, not sending email');
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('Env not set to production, not sending email');
     return;
   }
 
@@ -63,8 +62,8 @@ exports.sendDeregCode = (email, code) => {
 };
 
 exports.sendDeregConf = (email, name, number) => {
-  if (ENVIRONMENT === 'dev') {
-    console.log('Env set to dev, not sending email');
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('Env not set to production, not sending email');
     return;
   }
 

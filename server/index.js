@@ -10,7 +10,7 @@ const RESET_TIMEOUT = process.env.LOCKER_RESET_TIME || 900000;
 const SQL_USER = process.env.LOCKER_SQL_USER || 'lockers';
 const SQL_PASSWORD = process.env.LOCKER_SQL_PASSWORD || 'no_password';
 const SQL_TABLE = process.env.LOCKER_SQL_TABLE || 'lockers';
-const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
+const API_KEY = process.env.LOCKERS_API_KEY || 'no_key';
 
 app.use((req, res, next) => {
   // Create a connection to the SQL server
