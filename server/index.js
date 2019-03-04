@@ -32,7 +32,7 @@ app.get('/lockersapi/available', (req, res) => {
       console.log(error);
       res.status(500).send('Database query failed.');
     } else {
-      res.status(200).send(JSON.stringify(results));
+      res.status(200).json(results);
     }
   });
 });
@@ -44,7 +44,7 @@ app.get('/lockersapi/summary/all', (req, res) => {
       console.log(error);
       res.status(500).send('Database query failed.');
     } else {
-      res.status(200).send(JSON.stringify(results));
+      res.status(200).json(results);
     }
   });
 });
@@ -56,7 +56,7 @@ app.get('/lockersapi/summary/busted', (req, res) => {
       console.log(error);
       res.status(500).send('Database query failed.');
     } else {
-      res.status(200).send(JSON.stringify(results));
+      res.status(200).send(results);
     }
   });
 });
