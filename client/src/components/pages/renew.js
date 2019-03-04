@@ -17,7 +17,7 @@ class Renew extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 
@@ -27,11 +27,11 @@ class Renew extends Component {
       method: 'post',
       mode: 'same-origin',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: this.state.emailValue
-      })
+        email: this.state.emailValue,
+      }),
     })
       .then(res => {
         // If the request succeded, show the thank you page.
@@ -39,11 +39,13 @@ class Renew extends Component {
         if (res.status === 200) {
           this.props.history.push('/renew/thankyou');
         } else if (res.status >= 500) {
-          alert('An internal server error occurred, please try again later or contact the maintanter.');
+          alert(
+            'An internal server error occurred, please try again later or contact the maintanter.'
+          );
         } else {
           res.text().then(text => alert(text));
         }
-      })
+      });
     event.preventDefault();
   }
 
@@ -55,8 +57,12 @@ class Renew extends Component {
             <label htmlFor="inputEmail">Email address</label>
             <div className="form-row">
               <div className="form-group col-md-8">
-                <input type="email" name="emailValue" id="inputEmail" placeholder="Enter email" className="form-control" value={this.state.emailValue} onChange={this.handleChange} />
-                <small id="emailHelp" className="form-text text-muted">Enter the same email address you used to reserve your locker.</small>
+                <input type="email" name="emailValue" id="inputEmail" placeholder="Enter email"
+                  className="form-control" value={this.state.emailValue} onChange={this.handleChange}
+                />
+                <small id="emailHelp" className="form-text text-muted">
+                  Enter the same email address you used to reserve your locker.
+                </small>
               </div>
               <div className="form-group col-md-2">
                 <input type="submit" className="btn btn-primary"value="Renew" />

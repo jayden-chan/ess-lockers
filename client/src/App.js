@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   HashRouter as Router,
   Route,
-  Switch
+  Switch,
 } from 'react-router-dom';
 
 import Header from './components/header/header.js';

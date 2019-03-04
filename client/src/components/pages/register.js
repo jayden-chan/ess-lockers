@@ -7,7 +7,7 @@ class Register extends Component {
       nameValue: '',
       emailValue: '',
       lockerValue: '',
-      lockerOpt: []
+      lockerOpt: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -20,8 +20,8 @@ class Register extends Component {
       method: 'get',
       mode: 'same-origin',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     })
       .then(res => {
         // If the request succeded, parse the JSON data.
@@ -37,7 +37,7 @@ class Register extends Component {
   }
 
   componentWillMount() {
-    this.getLockerOpts()
+    this.getLockerOpts();
   }
 
   handleChange(event) {
@@ -46,7 +46,7 @@ class Register extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 
@@ -56,13 +56,13 @@ class Register extends Component {
       method: 'post',
       mode: 'same-origin',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         name: this.state.nameValue,
         email: this.state.emailValue,
-        locker: this.state.lockerValue
-      })
+        locker: this.state.lockerValue,
+      }),
     })
       .then(res => {
         // If the request succeeded, show the thank you page.
@@ -70,11 +70,13 @@ class Register extends Component {
         if (res.status === 200) {
           this.props.history.push('/register/thankyou');
         } else if (res.status >= 500) {
-          alert('An internal server error occurred, please try again later or contact the maintanter.');
+          alert(
+            'An internal server error occurred, please try again later or contact the maintanter.'
+          );
         } else {
           res.text().then(text => alert(text));
         }
-      })
+      });
 
     event.preventDefault();
   }
@@ -85,18 +87,26 @@ class Register extends Component {
         <form method="post" onSubmit={this.handleSubmit} style={{ marginTop: 30 }}>
           <div className="form-group">
             <label htmlFor="inputName">Name</label>
-            <input type="text" name="nameValue" placeholder="Enter name" className="form-control" value={this.state.nameValue} onChange={this.handleChange} />
+            <input type="text" name="nameValue" placeholder="Enter name" className="form-control"
+              value={this.state.nameValue} onChange={this.handleChange}
+            />
           </div>
           <div className="form-group">
             <label htmlFor="inputEmail">Email address</label>
-            <input type="email" name="emailValue" id="inputEmail" placeholder="Enter email" className="form-control" value={this.state.emailValue} onChange={this.handleChange} />
-            <small id="emailHelp" className="form-text text-muted">Your email will not be shared with anyone else. We will send you messages regarding the status of your reservation.</small>
+            <input type="email" name="emailValue" id="inputEmail" placeholder="Enter email"
+              className="form-control" value={this.state.emailValue} onChange={this.handleChange}
+            />
+            <small id="emailHelp" className="form-text text-muted">
+              Your email will not be shared with anyone else. We will send you messages
+              regarding the status of your reservation.
+            </small>
           </div>
           <div className="form-group" style={{ maxWidth: '40%' }}>
             <label htmlFor="lockerDrop">Choose your locker</label>
-            <select id="lockerDrop" className="form-control" name="lockerValue" value={this.state.lockerValue} onChange={this.handleChange}>
+            <select id="lockerDrop" className="form-control" name="lockerValue"
+              value={this.state.lockerValue} onChange={this.handleChange}>
               {this.state.lockerOpt.map(value => {
-                return <option key={value.number}>{value.number}</option>
+                return <option key={value.number}>{value.number}</option>;
               })}
               <option value="" disabled>Select locker</option>
             </select>

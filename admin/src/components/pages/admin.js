@@ -1,3 +1,4 @@
+/* global fetch */
 import React, { Component } from 'react';
 
 const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
@@ -8,8 +9,8 @@ class Admin extends Component {
     this.state = {
       all: [],
       searchNameString: '',
-      searchEmailString: ''
-    }
+      searchEmailString: '',
+    };
 
     this.handleChange = this.handleChange.bind(this);
   }
@@ -20,13 +21,11 @@ class Admin extends Component {
       method: 'get',
       mode: 'same-origin',
       headers: {
-        "Authorization": API_KEY,
-        'Content-Type': 'application/json'
-      }
+        'Authorization': API_KEY,
+        'Content-Type': 'application/json',
+      };
     })
       .then(res => {
-        // If the request was successful, redirect to thank you page,
-        // otherwise show what the error was
         if(res.status === 200) {
           return res.json();
         } else {
@@ -129,7 +128,10 @@ class Admin extends Component {
             <div className='form-group'>
               <div className='form-row'>
                 <div className='form-group col-md-4'>
-                  <input type='text' name='searchNameString' id='searchNameString' placeholder='Search by name, email, or status' className='form-control' value={this.state.searchNameString} onChange={this.handleChange} />
+                  <input type='text' name='searchNameString' id='searchNameString' 
+                    placeholder='Search by name, email, or status' className='form-control' 
+                    value={this.state.searchNameString} onChange={this.handleChange} 
+                  />
                 </div>
               </div>
             </div>

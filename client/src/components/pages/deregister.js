@@ -6,7 +6,7 @@ class Deregister extends Component {
     this.state = {
       numberValue: '',
       codeValue: '',
-      emailValue: ''
+      emailValue: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -20,7 +20,7 @@ class Deregister extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 
@@ -31,19 +31,21 @@ class Deregister extends Component {
       method: 'delete',
       mode: 'same-origin',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        code: this.state.codeValue
-      })
+        code: this.state.codeValue,
+      }),
     })
       .then(res => {
         // If the request was successful, redirect to thank you page,
         // otherwise show what the error was
         if (res.status === 200) {
           this.props.history.push('/deregister/thankyou');
-        } else if(res.status >= 500) {
-          alert('An internal server error occurred, please try again later or contact the maintaner.');
+        } else if (res.status >= 500) {
+          alert(
+            'An internal server error occurred, please try again later or contact the maintaner.'
+          );
         } else {
           res.text().then(text => alert(text));
         }
@@ -59,21 +61,23 @@ class Deregister extends Component {
       method: 'post',
       mode: 'same-origin',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         number: this.state.numberValue,
-        email: this.state.emailValue
-      })
+        email: this.state.emailValue,
+      }),
     })
       .then(res => {
         // If the request succeeded, let the user know
-        if(res.status >= 500) {
-          alert('An internal server error occurred, please try again later or contact the maintaner.');
+        if (res.status >= 500) {
+          alert(
+            'An internal server error occurred, please try again later or contact the maintaner.'
+          );
         } else {
           res.text().then(text => alert(text));
         }
-      })
+      });
 
     event.preventDefault();
   }
@@ -86,23 +90,35 @@ class Deregister extends Component {
             <label htmlFor="inputCode">Email</label>
             <div className="form-row">
               <div className="form-group col-md-6">
-                <input type="email" name="emailValue" id="inputEmail" placeholder="Enter email" className="form-control" value={this.state.emailValue} onChange={this.handleChange} />
+                <input type="email" name="emailValue" id="inputEmail" placeholder="Enter email"
+                  className="form-control" value={this.state.emailValue} onChange={this.handleChange}
+                />
               </div>
             </div>
             <label htmlFor="inputNumber">Locker number</label>
             <div className="form-row">
               <div className="form-group col-md-4">
-                <input type="number" name="numberValue" id="inputNumber" placeholder="Enter locker number" className="form-control" value={this.state.numberValue} onChange={this.handleChange} />
-                <small id="numberHelp" className="form-text text-muted">Enter the locker number you wish to deregister. A confirmation email will be sent to the address associated with the locker.</small>
+                <input type="number" name="numberValue" id="inputNumber"
+                  placeholder="Enter locker number" className="form-control"
+                  value={this.state.numberValue} onChange={this.handleChange}
+                />
+                <small id="numberHelp" className="form-text text-muted">
+                  Enter the locker number you wish to deregister.
+                  A confirmation email will be sent to the address associated with the locker.
+                </small>
               </div>
               <div className="form-group col-md-2">
-                <input type="button" className="btn btn-primary"value="Send code" onClick={this.handleCode}/>
+                <input type="button" className="btn btn-primary"value="Send code"
+                  onClick={this.handleCode}
+                />
               </div>
             </div>
             <label htmlFor="inputCode">Confirmation code</label>
             <div className="form-row">
               <div className="form-group col-md-2">
-                <input type="text" name="codeValue" id="inputCode" placeholder="Enter code" className="form-control" value={this.state.codeValue} onChange={this.handleChange} />
+                <input type="text" name="codeValue" id="inputCode" placeholder="Enter code"
+                  className="form-control" value={this.state.codeValue} onChange={this.handleChange}
+                />
               </div>
             </div>
             <input type="submit" className="btn btn-primary"value="Submit" />
