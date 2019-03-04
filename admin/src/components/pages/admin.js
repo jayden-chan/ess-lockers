@@ -7,7 +7,6 @@ class Admin extends Component {
     super(props);
     this.state = {
       all: [],
-      busted: [],
       searchNameString: '',
       searchEmailString: ''
     }
@@ -17,7 +16,7 @@ class Admin extends Component {
 
   fetchTableData(type) {
     // Fetch the lockers DB
-    fetch('/lockersapi/summary/' + type, {
+    fetch('/lockersapi/summary', {
       method: 'get',
       mode: 'same-origin',
       headers: {
@@ -36,13 +35,12 @@ class Admin extends Component {
         }
       })
       .then(json => {
-        this.setState({[type]: json})
+        this.setState({all: json})
       });
   }
 
   componentWillMount() {
-    this.fetchTableData('all');
-    this.fetchTableData('busted');
+    this.fetchTableData();
   }
 
   assembleTable(data) {

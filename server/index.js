@@ -38,7 +38,7 @@ app.get('/lockersapi/available', (req, res) => {
   });
 });
 
-app.get('/lockersapi/summary/all', (req, res) => {
+app.get('/lockersapi/summary', (req, res) => {
   if (req.headers.authorization !== API_KEY) {
     res.status(403).send('Unauthorized');
   }
@@ -50,22 +50,6 @@ app.get('/lockersapi/summary/all', (req, res) => {
       res.status(500).send('Database query failed.');
     } else {
       res.status(200).json(results);
-    }
-  });
-});
-
-app.get('/lockersapi/summary/busted', (req, res) => {
-  if (req.headers.authorization !== API_KEY) {
-    res.status(403).send('Unauthorized');
-  }
-
-  const query = sqlstring.format('SELECT * FROM ?? WHERE status = ?', [SQL_TABLE, 'busted']);
-  connection.query(query, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-      res.status(500).send('Database query failed.');
-    } else {
-      res.status(200).send(results);
     }
   });
 });
