@@ -28,3 +28,4 @@ yarn-error.log*
 *.swp
 admin/node_modules
 pm2.config.js
+client/temp/
