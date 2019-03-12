@@ -123,8 +123,8 @@ app.post('/lockersapi/renew', (req, res) => {
 app.post('/lockersapi/deregister/code', (req, res) => {
   if (req.body.number !== '' && req.body.email !== '') {
     const query = sqlstring.format(
-      'SELECT email FROM ?? WHERE number = ? AND status = ?', 
-      [SQL_TABLE, req.body.number, 'open']
+      'SELECT email FROM ?? WHERE number = ? AND status = ?',
+      [SQL_TABLE, req.body.number, 'closed']
     );
 
     connection.query(query, (error, results, fields) => {
