@@ -31,7 +31,7 @@ class Homepage extends Component {
             </p>
             <p style={{marginTop: 30, marginBottom: 35}}>
               Before you register a locker, you need to
-              <b>physically make sure the one you want is open.</b>
+              <b> physically make sure the one you want is open.</b>
               Then <b>you have to put a lock on it.</b> If you don&#39;t, and the rest
               of the lockers have been registered, we will delete your registration and
               give the locker to someone more deserving.
