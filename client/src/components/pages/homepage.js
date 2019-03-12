@@ -25,16 +25,17 @@ class Homepage extends Component {
               us that you will be continuing to use your locker.
             </p>
             <p style={{marginTop: 30}}>
-              These lockers are free, but <b>please</b> don&#39;t register for a locker unless
-              you really think you are going to use it. There are far less lockers than students.
-              You do not need to be in the faculty of Engineering to use a locker.
+              These lockers are free, but <b>please</b> don&#39;t register for a
+              locker unless you really think you are going to use it. There are
+              far less lockers than students. You do not need to be in the faculty
+              of Engineering to use a locker.
             </p>
             <p style={{marginTop: 30, marginBottom: 35}}>
-              Before you register a locker, you need to
-              <b> physically make sure the one you want is open.</b>
-              Then <b>you have to put a lock on it.</b> If you don&#39;t, and the rest
-              of the lockers have been registered, we will delete your registration and
-              give the locker to someone more deserving.
+              Before you register a locker, you need to <b>physically
+              make sure the one you want is open.</b> Then <b>you have
+              to put a lock on it.</b> If you don&#39;t, and the rest
+              of the lockers have been registered, we will delete your
+              registration and give the locker to someone more deserving.
             </p>
             <Link to="register">
               <button className="btn btn-primary btn-lg">

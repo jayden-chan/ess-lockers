@@ -1,6 +1,7 @@
 #!/bin/zsh
-#
-if [ $1 != "--dry-run" ]; then
+
+if [ $1 = "--dry-run" ]; then
+else
     echo
     echo "=================="
     echo "     WAIT!!!      "
@@ -55,5 +56,6 @@ set +v
 echo
 echo
 echo "=================="
-echo "Frontend deploy complete. Remember to add back the old PHP files for backwards compatibility"
+echo "Frontend deploy complete. Remember to add back the old PHP files"
+echo "for backwards compatibility"
 echo "=================="
