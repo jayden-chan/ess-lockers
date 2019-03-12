@@ -1,25 +1,27 @@
 #!/bin/zsh
+#
+if [ $1 != "--dry-run" ]; then
+    echo
+    echo "=================="
+    echo "     WAIT!!!      "
+    echo "=================="
+    echo
+    echo "Did you remember to delete the existing build files on the ESS server?"
+    echo "(the files are ~/www/ess.uvic.ca/ess-lockers/client/build)"
+    echo "(delete the whole folder)"
+    echo
+    echo "Did you remember to set the lockers API key in the admin file?"
+    echo
 
-echo
-echo "=================="
-echo "     WAIT!!!      "
-echo "=================="
-echo
-echo "Did you remember to delete the existing build files on the ESS server?"
-echo "(the files are ~/www/ess.uvic.ca/ess-lockers/client/build)"
-echo "(delete the whole folder)"
-echo
-echo "Did you remember to set the lockers API key in the admin file?"
-echo
+    echo -n "Continue? [Y/n] "
+    read answer
 
-echo -n "Continue? [Y/n] "
-read answer
-
-if [ "$answer" != "${answer#[Yy]}" ]; then
-    echo Running setup script...
-else
-    echo Aborting
-    exit 0
+    if [ "$answer" != "${answer#[Yy]}" ]; then
+        echo Running setup script...
+    else
+        echo Aborting
+        exit 0
+    fi
 fi
 
 set -v
@@ -31,6 +33,16 @@ cd ../admin
 npm run build
 
 cd ../
+
+set +v
+
+if [ $1 = "--dry-run" ]; then
+    echo
+    echo "Dry run selected, not copying files to server"
+    exit 0
+fi
+
+set -v
 
 # COPY BUILT CLIENT FILES
 scp -r client/build ess@ess.uvic.ca:/home/ess/www/ess.uvic.ca/ess-lockers/client/
