@@ -9,7 +9,10 @@ class Admin extends Component {
     this.state = {
       all: [],
       searchNameString: '',
-      searchEmailString: '',
+      editingRow: null,
+      editName: '',
+      editEmail: '',
+      editStatus: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -91,6 +94,64 @@ class Admin extends Component {
             }
 
             if (containsName || containsEmail || containsStatus) {
+              if (this.state.editingRow === entry.number) {
+                return (
+                  <tr key={entry.number}>
+                      <th scope="row">{entry.number}</th>
+                      <td>
+                        <form>
+                          <input
+                            type="text"
+                            name="editName"
+                            value={this.state.editName}
+                            onChange={this.handleChange}
+                          />
+                        </form>
+                      </td>
+                      <td>
+                        <form>
+                          <input
+                            type="text"
+                            name="editEmail"
+                            value={this.state.editEmail}
+                            onChange={this.handleChange}
+                          />
+                        </form>
+                      </td>
+                      <td>
+                        {entry.submitted}
+                      </td>
+                      <td>
+                        <form>
+                          <select
+                            name="editStatus"
+                            value={this.state.editStatus}
+                            onChange={this.handleChange}
+                          >
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                            <option value="pending">Pending</option>
+                            <option value="reserved">Reserved</option>
+                            <option value="busted">Busted</option>
+                          </select>
+                        </form>
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-primary btn-sm"
+                          onClick={() => {
+                            this.setState({editingRow: null});
+                            console.log(this.state.editName);
+                            console.log(this.state.editEmail);
+                            console.log(this.state.editStatus);
+                          }}
+                        >
+                          Finished
+                        </button>
+                      </td>
+                  </tr>
+                );
+              }
               return (
                 <tr key={entry.number}>
                   <th scope="row">{entry.number}</th>
@@ -98,6 +159,19 @@ class Admin extends Component {
                   <td>{entry.email}</td>
                   <td>{entry.submitted}</td>
                   <td>{entry.status}</td>
+                  <td>
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => {this.setState({
+                        editingRow: entry.number,
+                        editName: entry.name,
+                        editEmail: entry.email,
+                        editStatus: entry.status,
+                      })}}
+                    >
+                      Edit Row
+                    </button>
+                  </td>
                 </tr>
               );
             } else {
