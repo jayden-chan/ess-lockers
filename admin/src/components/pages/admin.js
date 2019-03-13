@@ -38,8 +38,13 @@ class Admin extends Component {
         if (res.status === 200) {
           return res.json();
         } else {
-          console.log('Lockers API req failed (Code: '+ res.status + ')');
-          return [];
+          return res.text().then(text => {
+            console.log(`Lockers API request failed with status code ${res.status}: ${text}`);
+            return {error: {
+              code: res.status,
+              message: text,
+            }};
+          });
         }
       })
       .then(json => {
@@ -194,7 +199,7 @@ class Admin extends Component {
   }
 
   assembleTable(data) {
-    if (data === undefined) {
+    if (data.error) {
       return (
         <table className="table">
           <thead>
@@ -204,7 +209,7 @@ class Admin extends Component {
           </thead>
           <tbody>
             <tr>
-              <th scope="row">An internal server error ocurred.</th>
+              <th scope="row">An error ocurred (Code {data.error.code}): {data.error.message}</th>
             </tr>
           </tbody>
         </table>
