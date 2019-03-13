@@ -1,5 +1,6 @@
 /* global fetch */
 import React, { Component } from 'react';
+import dayjs from 'dayjs';
 
 const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
 
@@ -16,6 +17,7 @@ class Admin extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleButtonPress = this.handleButtonPress.bind(this);
   }
 
   fetchTableData(type) {
@@ -41,8 +43,129 @@ class Admin extends Component {
       });
   }
 
-  componentWillMount() {
+  handleButtonPress(event) {
+    if (event.keyCode === 27) {
+      this.setState({
+        editingRow: null,
+        editName: '',
+        editEmail: '',
+        editStatus: '',
+      });
+    }
+  }
+
+  componentDidMount() {
     this.fetchTableData();
+    document.addEventListener('keydown', this.handleButtonPress, false);
+  }
+
+  componentWillUnmount(){
+    document.removeEventListener('keydown', this.handleButtonPress, false);
+  }
+
+  editableRow(entry) {
+    return (
+      <tr key={entry.number}>
+        <th scope="row">{entry.number}</th>
+        <td>
+          <form>
+            <input
+              type="text"
+              name="editName"
+              value={this.state.editName}
+              onChange={this.handleChange}
+            />
+          </form>
+        </td>
+        <td>
+          <form>
+            <input
+              type="text"
+              name="editEmail"
+              value={this.state.editEmail}
+              onChange={this.handleChange}
+            />
+          </form>
+        </td>
+        <td>
+          {dayjs(entry.submitted).format('MMM D, YYYY hh:mm:ss A')}
+        </td>
+        <td>
+          <form>
+            <select
+              name="editStatus"
+              value={this.state.editStatus}
+              onChange={this.handleChange}
+            >
+              <option value="open">Open</option>
+              <option value="closed">Closed</option>
+              <option value="pending">Pending</option>
+              <option value="reserved">Reserved</option>
+              <option value="busted">Busted</option>
+            </select>
+          </form>
+        </td>
+        <td>
+          <button
+            className="btn btn-success btn-sm"
+            onClick={() => {
+              this.setState({editingRow: null});
+              fetch('/lockersapi/upsert', {
+                method: 'post',
+                mode: 'same-origin',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  name: this.state.editName,
+                  email: this.state.editEmail,
+                  locker: this.state.editingRow,
+
+                })
+              })
+                .then(res => {
+                  if (res.status === 200) {
+                    return res.json();
+                  } else {
+                    console.log('Lockers API req failed (Code: '+ res.status + ')');
+                    return [];
+                  }
+                })
+                .then(json => {
+                  this.setState({all: json});
+                });
+            }}
+          >
+            Finished
+          </button>
+        </td>
+      </tr>
+    );
+  }
+
+  staticRow(entry) {
+    return (
+      <tr key={entry.number}>
+        <th scope="row">{entry.number}</th>
+        <td>{entry.name}</td>
+        <td>{entry.email}</td>
+        <td>{dayjs(entry.submitted).format('MMM D, YYYY hh:mm:ss A')}</td>
+        <td>{entry.status}</td>
+        <td>
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={() => {this.setState({
+              editingRow: entry.number,
+              editName: entry.name,
+              editEmail: entry.email,
+              editStatus: entry.status,
+            })}}
+          >
+            Edit Row
+          </button>
+        </td>
+      </tr>
+    );
   }
 
   assembleTable(data) {
@@ -61,8 +184,8 @@ class Admin extends Component {
           </tbody>
         </table>
       );
-
     }
+
     return (
       <table className="table">
         <thead>
@@ -95,85 +218,10 @@ class Admin extends Component {
 
             if (containsName || containsEmail || containsStatus) {
               if (this.state.editingRow === entry.number) {
-                return (
-                  <tr key={entry.number}>
-                      <th scope="row">{entry.number}</th>
-                      <td>
-                        <form>
-                          <input
-                            type="text"
-                            name="editName"
-                            value={this.state.editName}
-                            onChange={this.handleChange}
-                          />
-                        </form>
-                      </td>
-                      <td>
-                        <form>
-                          <input
-                            type="text"
-                            name="editEmail"
-                            value={this.state.editEmail}
-                            onChange={this.handleChange}
-                          />
-                        </form>
-                      </td>
-                      <td>
-                        {entry.submitted}
-                      </td>
-                      <td>
-                        <form>
-                          <select
-                            name="editStatus"
-                            value={this.state.editStatus}
-                            onChange={this.handleChange}
-                          >
-                            <option value="open">Open</option>
-                            <option value="closed">Closed</option>
-                            <option value="pending">Pending</option>
-                            <option value="reserved">Reserved</option>
-                            <option value="busted">Busted</option>
-                          </select>
-                        </form>
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-primary btn-sm"
-                          onClick={() => {
-                            this.setState({editingRow: null});
-                            console.log(this.state.editName);
-                            console.log(this.state.editEmail);
-                            console.log(this.state.editStatus);
-                          }}
-                        >
-                          Finished
-                        </button>
-                      </td>
-                  </tr>
-                );
+                return this.editableRow(entry);
+              } else {
+                return this.staticRow(entry);
               }
-              return (
-                <tr key={entry.number}>
-                  <th scope="row">{entry.number}</th>
-                  <td>{entry.name}</td>
-                  <td>{entry.email}</td>
-                  <td>{entry.submitted}</td>
-                  <td>{entry.status}</td>
-                  <td>
-                    <button
-                      className="btn btn-primary btn-sm"
-                      onClick={() => {this.setState({
-                        editingRow: entry.number,
-                        editName: entry.name,
-                        editEmail: entry.email,
-                        editStatus: entry.status,
-                      })}}
-                    >
-                      Edit Row
-                    </button>
-                  </td>
-                </tr>
-              );
             } else {
               return (<div></div>);
             }

@@ -56,6 +56,32 @@ app.get('/lockersapi/summary', (req, res) => {
   });
 });
 
+app.post('/lockersapi/upsert', (req, res) => {
+  if (req.headers.authorization !== API_KEY) {
+    res.status(403).send('Unauthorized');
+  }
+
+  if (req.body.name !== ''
+    && req.body.email !== ''
+    && req.body.locker !== ''
+    && req.body.status != '') {
+    const query1 = sqlstring.format(
+      'UPDATE ?? SET name = ?, email = ? submitted = NOW(), status = ? WHERE number = ?',
+      [SQL_TABLE, req.body.name, req.body.email, req.body.status, req.body.number]);
+
+    connection.query(query1, (error, results, fields) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send('An internal server error occured');
+      } else {
+        res.status(200).send('Locker updated');
+      }
+    });
+  } else {
+    res.status(400).send('One or more data fields were not filled. Please try again.');
+  }
+});
+
 app.post('/lockersapi/new', (req, res) => {
   if (req.body.name !== '' && req.body.email !== '' && req.body.locker !== '') {
 
