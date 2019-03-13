@@ -25,17 +25,20 @@ else
     fi
 fi
 
-set -v
+if [ $1 = "--skip-build" ]; then
+else
+    set -v
 
-cd ./client
-npm run build
+    cd ./client
+    npm run build
 
-cd ../admin
-npm run build
+    cd ../admin
+    npm run build
 
-cd ../
+    cd ../
 
-set +v
+    set +v
+fi
 
 if [ $1 = "--dry-run" ]; then
     echo
