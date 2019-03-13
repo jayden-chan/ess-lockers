@@ -1,6 +1,9 @@
 /* global fetch */
 import React, { Component } from 'react';
 import dayjs from 'dayjs';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import '../../assets/css/custom.min.css';
 
 const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
 
@@ -14,6 +17,7 @@ class Admin extends Component {
       editName: '',
       editEmail: '',
       editStatus: '',
+      editIndex: 0,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -63,7 +67,7 @@ class Admin extends Component {
     document.removeEventListener('keydown', this.handleButtonPress, false);
   }
 
-  editableRow(entry) {
+  editableRow(entry, idx) {
     return (
       <tr key={entry.number}>
         <th scope="row">{entry.number}</th>
@@ -109,7 +113,21 @@ class Admin extends Component {
           <button
             className="btn btn-success btn-sm"
             onClick={() => {
-              this.setState({editingRow: null});
+              let newAll = this.state.all;
+
+              newAll[idx].name = this.state.editName;
+              newAll[idx].email = this.state.editEmail;
+              newAll[idx].status = this.state.editStatus;
+
+              this.setState({
+                editingRow: null,
+                editName: '',
+                editEmail: '',
+                editStats: '',
+                editIndex: 0,
+                all: newAll,
+              });
+
               fetch('/lockersapi/upsert', {
                 method: 'post',
                 mode: 'same-origin',
@@ -126,9 +144,18 @@ class Admin extends Component {
               })
                 .then(res => {
                   if (res.status === 200) {
-                    alert('Locker updated');
+                    toast('Locker updated successfully', {
+                      hideProgressBar: true,
+                      autoClose: 3000,
+                      className: "toast-container"
+                    });
                   } else {
-                    alert(`Locker update failed, status code ${res.status}`)
+                    res.text().then(text => {
+                      toast.error(`Locker update failed with status code ${res.status}:\n${text}`, {
+                        hideProgressBar: true,
+                        autoClose: 3000,
+                      });
+                    });
                   }
                 });
             }}
@@ -140,7 +167,7 @@ class Admin extends Component {
     );
   }
 
-  staticRow(entry) {
+  staticRow(entry, idx) {
     return (
       <tr key={entry.number}>
         <th scope="row">{entry.number}</th>
@@ -156,6 +183,7 @@ class Admin extends Component {
               editName: entry.name,
               editEmail: entry.email,
               editStatus: entry.status,
+              editIndex: idx,
             })}}
           >
             Edit Row
@@ -195,7 +223,7 @@ class Admin extends Component {
           </tr>
         </thead>
         <tbody>
-          {data.map(entry => {
+          {data.map((entry, idx) => {
             // Filter the locker table based on the contents of the search bar
             const containsName = entry.name
               .toLowerCase()
@@ -215,9 +243,9 @@ class Admin extends Component {
 
             if (containsName || containsEmail || containsStatus) {
               if (this.state.editingRow === entry.number) {
-                return this.editableRow(entry);
+                return this.editableRow(entry, idx);
               } else {
-                return this.staticRow(entry);
+                return this.staticRow(entry, idx);
               }
             } else {
               return (<div></div>);
@@ -265,6 +293,7 @@ class Admin extends Component {
             </div>
           </form>
 
+          <ToastContainer/>
           <div style={{marginBottom: '50px'}}>
             {this.assembleTable(this.state.all)}
           </div>
