@@ -114,25 +114,22 @@ class Admin extends Component {
                 method: 'post',
                 mode: 'same-origin',
                 headers: {
+                  'Authorization': API_KEY,
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                   name: this.state.editName,
                   email: this.state.editEmail,
-                  locker: this.state.editingRow,
-
+                  number: this.state.editingRow,
+                  status: this.state.editStatus,
                 })
               })
                 .then(res => {
                   if (res.status === 200) {
-                    return res.json();
+                    alert('Locker updated');
                   } else {
-                    console.log('Lockers API req failed (Code: '+ res.status + ')');
-                    return [];
+                    alert(`Locker update failed, status code ${res.status}`)
                   }
-                })
-                .then(json => {
-                  this.setState({all: json});
                 });
             }}
           >

@@ -66,7 +66,7 @@ app.post('/lockersapi/upsert', (req, res) => {
     && req.body.locker !== ''
     && req.body.status != '') {
     const query1 = sqlstring.format(
-      'UPDATE ?? SET name = ?, email = ? submitted = NOW(), status = ? WHERE number = ?',
+      'UPDATE ?? SET name = ?, email = ?, submitted = NOW(), status = ? WHERE number = ?',
       [SQL_TABLE, req.body.name, req.body.email, req.body.status, req.body.number]);
 
     connection.query(query1, (error, results, fields) => {
