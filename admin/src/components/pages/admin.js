@@ -97,7 +97,7 @@ class Admin extends Component {
           </form>
         </td>
         <td>
-          {dayjs(entry.submitted).format('MMM D, YYYY hh:mm:ss A')}
+          {dayjs(entry.submitted).format('MMM D, YYYY h:mm:ss A')}
         </td>
         <td>
           <form>
@@ -223,7 +223,7 @@ class Admin extends Component {
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
-            <th scope="col">Submitted</th>
+            <th scope="col">Last Updated</th>
             <th scope="col">Status</th>
           </tr>
         </thead>
