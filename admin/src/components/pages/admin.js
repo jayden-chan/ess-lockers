@@ -122,7 +122,7 @@ class Admin extends Component {
                 method: 'post',
                 mode: 'same-origin',
                 headers: {
-                  // 'Authorization': API_KEY,
+                  'Authorization': API_KEY,
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
