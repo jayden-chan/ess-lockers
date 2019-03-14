@@ -43,6 +43,7 @@ app.get('/lockersapi/available', (req, res) => {
 app.get('/lockersapi/summary', (req, res) => {
   if (req.headers.authorization !== API_KEY) {
     res.status(403).send('Unauthorized');
+    return;
   }
 
   const query = sqlstring.format('SELECT * FROM ??', SQL_TABLE);
@@ -59,6 +60,7 @@ app.get('/lockersapi/summary', (req, res) => {
 app.post('/lockersapi/upsert', (req, res) => {
   if (req.headers.authorization !== API_KEY) {
     res.status(403).send('Unauthorized');
+    return;
   }
 
   if (req.body.name !== ''
@@ -107,6 +109,7 @@ app.post('/lockersapi/new', (req, res) => {
 
       } else {
         res.status(403).send('Email is already registered to a locker');
+        return;
       }
     });
   } else {

@@ -118,26 +118,11 @@ class Admin extends Component {
           <button
             className="btn btn-success btn-sm"
             onClick={() => {
-              let newAll = this.state.all;
-
-              newAll[idx].name = this.state.editName;
-              newAll[idx].email = this.state.editEmail;
-              newAll[idx].status = this.state.editStatus;
-
-              this.setState({
-                editingRow: null,
-                editName: '',
-                editEmail: '',
-                editStats: '',
-                editIndex: 0,
-                all: newAll,
-              });
-
               fetch('/lockersapi/upsert', {
                 method: 'post',
                 mode: 'same-origin',
                 headers: {
-                  'Authorization': API_KEY,
+                  // 'Authorization': API_KEY,
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
@@ -153,6 +138,21 @@ class Admin extends Component {
                       hideProgressBar: true,
                       autoClose: 3000,
                       className: "toast-container"
+                    });
+
+                    let newAll = this.state.all;
+
+                    newAll[idx].name = this.state.editName;
+                    newAll[idx].email = this.state.editEmail;
+                    newAll[idx].status = this.state.editStatus;
+
+                    this.setState({
+                      editingRow: null,
+                      editName: '',
+                      editEmail: '',
+                      editStats: '',
+                      editIndex: 0,
+                      all: newAll,
                     });
                   } else {
                     res.text().then(text => {
