@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import '../../assets/css/custom.min.css';
 
 const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
+const DATE_FORMAT = 'MMM D, YYYY h:mm:ss A';
 
 class Admin extends Component {
   constructor(props) {
@@ -52,14 +53,74 @@ class Admin extends Component {
       });
   }
 
-  handleButtonPress(event) {
-    if (event.keyCode === 27) {
-      this.setState({
-        editingRow: null,
-        editName: '',
-        editEmail: '',
-        editStatus: '',
+  submitWithEnter(event) {
+    this.submitEdits();
+    event.preventDefault();
+  }
+
+  submitEdits() {
+    fetch('/lockersapi/upsert', {
+      method: 'post',
+      mode: 'same-origin',
+      headers: {
+        'Authorization': API_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: this.state.editName,
+        email: this.state.editEmail,
+        number: this.state.editingRow,
+        status: this.state.editStatus,
+      })
+    })
+      .then(res => {
+        if (res.status === 200) {
+          toast('Locker updated successfully', {
+            hideProgressBar: true,
+            autoClose: 3000,
+            className: "toast-container"
+          });
+
+          let newAll = this.state.all;
+          const idx = this.state.editIndex;
+
+          newAll[idx].name = this.state.editName;
+          newAll[idx].email = this.state.editEmail;
+          newAll[idx].status = this.state.editStatus;
+
+          this.setState({
+            editingRow: null,
+            editName: '',
+            editEmail: '',
+            editStats: '',
+            editIndex: 0,
+            all: newAll,
+          });
+        } else {
+          res.text().then(text => {
+            toast.error(`Locker update failed with status code ${res.status}:\n${text}`, {
+              hideProgressBar: true,
+              autoClose: 3000,
+            });
+          });
+        }
       });
+  }
+
+  handleButtonPress(event) {
+    switch (event.keyCode) {
+      case 27:
+        this.setState({
+          editingRow: null,
+          editName: '',
+          editEmail: '',
+          editStatus: '',
+        });
+        break;
+      case 65:
+        console.log(this.state);
+        break;
+      default: break;
     }
   }
 
@@ -77,7 +138,7 @@ class Admin extends Component {
       <tr key={entry.number}>
         <th scope="row">{entry.number}</th>
         <td>
-          <form>
+          <form onSubmit={(e) => this.submitWithEnter(e)}>
             <input
               type="text"
               name="editName"
@@ -87,7 +148,7 @@ class Admin extends Component {
           </form>
         </td>
         <td>
-          <form>
+          <form onSubmit={(e) => this.submitWithEnter(e)}>
             <input
               type="text"
               name="editEmail"
@@ -97,10 +158,10 @@ class Admin extends Component {
           </form>
         </td>
         <td>
-          {dayjs(entry.submitted).format('MMM D, YYYY h:mm:ss A')}
+          {dayjs(entry.submitted).format(DATE_FORMAT)}
         </td>
         <td>
-          <form>
+          <form onSubmit={(e) => this.submitWithEnter(e)}>
             <select
               name="editStatus"
               value={this.state.editStatus}
@@ -117,53 +178,7 @@ class Admin extends Component {
         <td>
           <button
             className="btn btn-success btn-sm"
-            onClick={() => {
-              fetch('/lockersapi/upsert', {
-                method: 'post',
-                mode: 'same-origin',
-                headers: {
-                  'Authorization': API_KEY,
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  name: this.state.editName,
-                  email: this.state.editEmail,
-                  number: this.state.editingRow,
-                  status: this.state.editStatus,
-                })
-              })
-                .then(res => {
-                  if (res.status === 200) {
-                    toast('Locker updated successfully', {
-                      hideProgressBar: true,
-                      autoClose: 3000,
-                      className: "toast-container"
-                    });
-
-                    let newAll = this.state.all;
-
-                    newAll[idx].name = this.state.editName;
-                    newAll[idx].email = this.state.editEmail;
-                    newAll[idx].status = this.state.editStatus;
-
-                    this.setState({
-                      editingRow: null,
-                      editName: '',
-                      editEmail: '',
-                      editStats: '',
-                      editIndex: 0,
-                      all: newAll,
-                    });
-                  } else {
-                    res.text().then(text => {
-                      toast.error(`Locker update failed with status code ${res.status}:\n${text}`, {
-                        hideProgressBar: true,
-                        autoClose: 3000,
-                      });
-                    });
-                  }
-                });
-            }}
+            onClick={() => this.submitEdits()}
           >
             Finished
           </button>
@@ -178,7 +193,7 @@ class Admin extends Component {
         <th scope="row">{entry.number}</th>
         <td>{entry.name}</td>
         <td>{entry.email}</td>
-        <td>{dayjs(entry.submitted).format('MMM D, YYYY hh:mm:ss A')}</td>
+        <td>{dayjs(entry.submitted).format(DATE_FORMAT)}</td>
         <td>{entry.status}</td>
         <td>
           <button
