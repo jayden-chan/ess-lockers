@@ -40,6 +40,10 @@ app.use(bodyParser.json());
 
 app.get('/lockersapi/available', routes.available);
 
+app.get('/lockersapi/ping', (req, res) => {
+  res.status(200).send('Hello from the ESS Lockers API!');
+});
+
 // app.get('/lockersapi/available', (req, res) => {
 //   const query = sqlstring.format('SELECT number FROM ?? WHERE status = ?', [SQL_TABLE, 'open']);
 //   connection.query(query, (error, results, fields) => {
