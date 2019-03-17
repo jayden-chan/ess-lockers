@@ -6,7 +6,11 @@ const emailer = require('./emailer.js');
 const RESET_TIMEOUT = process.env.LOCKERS_RESET_TIME || 900000;
 const SQL_TABLE = process.env.LOCKERS_SQL_TABLE || 'lockers';
 
-export const available = (req, res) => {
+exports.test = (req, res) => {
+  res.status(200).send('hello workd!!!!!');
+};
+
+exports.available = (req, res) => {
   const query = sqlstring.format('SELECT number FROM ?? WHERE status = ?', [SQL_TABLE, 'open']);
   connection.query(query, (error, results, fields) => {
     if (error) {
@@ -18,7 +22,7 @@ export const available = (req, res) => {
   });
 };
 
-export const summary = (req, res) => {
+exports.summary = (req, res) => {
   const query = sqlstring.format('SELECT * FROM ??', SQL_TABLE);
   connection.query(query, (error, results, fields) => {
     if (error) {
@@ -30,7 +34,7 @@ export const summary = (req, res) => {
   });
 };
 
-export const upsert = (req, res) => {
+exports.upsert = (req, res) => {
   if (req.body.name !== ''
     && req.body.email !== ''
     && req.body.locker !== ''
@@ -52,7 +56,7 @@ export const upsert = (req, res) => {
   }
 };
 
-export const create = (req, res) => {
+exports.create = (req, res) => {
   if (req.body.name !== '' && req.body.email !== '' && req.body.locker !== '') {
 
     const query1 = sqlstring.format('SELECT * FROM ?? WHERE email = ? AND status = ?',
@@ -85,7 +89,7 @@ export const create = (req, res) => {
   }
 };
 
-export const renew = (req, res) => {
+exports.renew = (req, res) => {
   if (req.body.email !== '') {
     const query1 = sqlstring.format('SELECT name, number FROM ?? WHERE email = ? AND status = ?',
       [SQL_TABLE, req.body.email, 'pending']);
@@ -117,7 +121,7 @@ export const renew = (req, res) => {
   }
 };
 
-export const code = (req, res) => {
+exports.code = (req, res) => {
   if (req.body.number !== '' && req.body.email !== '') {
     const query = sqlstring.format(
       'SELECT email FROM ?? WHERE number = ? AND status = ?',
@@ -165,7 +169,7 @@ export const code = (req, res) => {
   }
 };
 
-export const confirm = (req, res) => {
+exports.confirm = (req, res) => {
   if (req.body.code !== '') {
     const query1 = sqlstring.format(
       'SELECT * FROM ?? WHERE reset_code = ?', [SQL_TABLE, req.body.code]

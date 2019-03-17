@@ -20,8 +20,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// Basic auth middleware
 app.use((req, res, next) => {
-  switch (req.route.path) {
+  switch (req.url) {
     case '/lockersapi/summary':
     case '/lockersapi/upsert':
       if (req.headers.authorization !== API_KEY) {
@@ -34,7 +35,7 @@ app.use((req, res, next) => {
   }
 });
 
-// Middleware
+// Parse body as JSON
 app.use(bodyParser.json());
 
 app.get('/lockersapi/available', routes.available);
