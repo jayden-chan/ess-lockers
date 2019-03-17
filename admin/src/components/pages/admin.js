@@ -300,7 +300,7 @@ class Admin extends Component {
           </div>
           <h5 className='display-5'>All Lockers</h5>
 
-          <form>
+          <form onSubmit={(e) => e.preventDefault()}>
             <div className='form-group'>
               <div className='form-row'>
                 <div className='form-group col-md-4'>

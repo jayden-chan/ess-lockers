@@ -24,10 +24,5 @@
     "prompts": "^1.2.1",
     "sendmail": "^1.4.1",
     "sqlstring": "^2.3.1"
-  },
-  "devDependencies": {
-    "eslint": "^5.15.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.16.0"
   }
 }
