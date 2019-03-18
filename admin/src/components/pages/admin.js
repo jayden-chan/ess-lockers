@@ -244,24 +244,35 @@ class Admin extends Component {
         </thead>
         <tbody>
           {data.map((entry, idx) => {
-            // Filter the locker table based on the contents of the search bar
-            const containsName = entry.name
-              .toLowerCase()
-              .includes(this.state.searchNameString.toLowerCase());
 
-            const containsStatus = entry.status
-              .toLowerCase()
-              .includes(this.state.searchNameString.toLowerCase());
+            let searchTerm = this.state.searchNameString.toLowerCase();
+            let shouldShow = false;
 
-            let containsEmail = false;
-
-            if (entry.email !== null) {
-              containsEmail = entry.email
+            if (searchTerm.startsWith('#')) {
+              searchTerm = searchTerm.substring(1);
+              shouldShow = (idx + 1).toString().includes(searchTerm);
+            } else {
+              // Filter the locker table based on the contents of the search bar
+              const containsName = entry.name
                 .toLowerCase()
                 .includes(this.state.searchNameString.toLowerCase());
+
+              const containsStatus = entry.status
+                .toLowerCase()
+                .includes(this.state.searchNameString.toLowerCase());
+
+              let containsEmail = false;
+
+              if (entry.email !== null) {
+                containsEmail = entry.email
+                  .toLowerCase()
+                  .includes(this.state.searchNameString.toLowerCase());
+              }
+
+              shouldShow = containsName || containsEmail || containsStatus;
             }
 
-            if (containsName || containsEmail || containsStatus) {
+            if (shouldShow) {
               if (this.state.editingRow === entry.number) {
                 return this.editableRow(entry, idx);
               } else {
