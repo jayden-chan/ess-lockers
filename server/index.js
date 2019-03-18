@@ -28,6 +28,8 @@ app.use((req, res, next) => {
       if (req.headers.authorization !== API_KEY) {
         res.status(403).send('Unauthorized');
         return;
+      } else {
+        next();
       }
       break;
     default:
