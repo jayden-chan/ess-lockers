@@ -7,7 +7,8 @@ const RESET_TIMEOUT = process.env.LOCKERS_RESET_TIME || 900000;
 const SQL_TABLE = process.env.LOCKERS_SQL_TABLE || 'lockers';
 
 exports.test = (req, res) => {
-  res.status(200).send('hello workd!!!!!');
+  emailer.send('5c10q7pyNgCgJMW562H9G9', 'jaydencn7@gmail.com', 'Jayden Chan', '99');
+  res.status(200).send('OK');
 };
 
 exports.available = (req, res) => {

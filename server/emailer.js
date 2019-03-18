@@ -1,5 +1,47 @@
 const sendmail = require('sendmail')();
 
+const contentful = require('contentful')
+  .createClient({
+    space: process.env.CONTENTFUL_SPACE_ID,
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+  });
+
+const templateReplace = (text, name, number, code) => {
+  return text
+    .replace(/{{name}}/, name || '')
+    .replace(/{{number}}/, number || '')
+    .replace(/{{code}}/, code || '');
+};
+
+const htmlFormat = (text) => {
+  return text.split('\n').reduce((acc, curr) => {
+    return curr !== '' ? acc + `<p>${curr}</p>` : acc;
+  }, '');
+};
+
+exports.send = (template, email, name, number, code) => {
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('Env not set to production, not sending email');
+    return;
+  }
+
+  contentful
+    .getEntry(template)
+    .then(entry => {
+      const greeting = `<p>${templateReplace(entry.fields.greeting, name, number, code)}</p>`;
+      const body = htmlFormat(templateReplace(entry.fields.body, name, number, code));
+      const footer = `<p>${templateReplace(entry.fields.footer, name, number, code)}</p>`;
+
+      sendmail({
+        from: 'ess@engr.uvic.ca',
+        to: email,
+        subject: entry.fields.subject,
+        html: `${greeting}\n${body}\n${footer}`,
+      });
+    })
+    .catch(err => console.log(err));
+};
+
 exports.sendConfirmation = (email, name, number) => {
   if (process.env.NODE_ENV !== 'production') {
     console.log('Env not set to production, not sending email');
