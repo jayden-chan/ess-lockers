@@ -46,7 +46,7 @@ app.get('/lockersapi/ping', (req, res) => {
 
 app.get('/lockersapi/test', routes.test);
 app.get('/lockersapi/available', routes.available);
-app.get('lockersapi/summary', routes.summary);
+app.get('/lockersapi/summary', routes.summary);
 app.post('/lockersapi/upsert', routes.upsert);
 app.post('/lockersapi/new', routes.create);
 app.post('/lockersapi/renew', routes.renew);

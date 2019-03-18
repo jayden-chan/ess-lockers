@@ -7,7 +7,7 @@ const RESET_TIMEOUT = process.env.LOCKERS_RESET_TIME || 900000;
 const SQL_TABLE = process.env.LOCKERS_SQL_TABLE || 'lockers';
 
 const EMAIL_TEMPLATES = JSON.parse(require('fs')
-  .readFileSync('./emailTemplates.json'));
+  .readFileSync('server/emailTemplates.json'));
 
 exports.test = (req, res) => {
   emailer.send('5c10q7pyNgCgJMW562H9G9', 'jaydencn7@gmail.com', 'Jayden Chan', '99');
