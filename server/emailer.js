@@ -30,7 +30,7 @@ exports.send = (template, email, name, number, code) => {
     .then(entry => {
       const greeting = `<p>${templateReplace(entry.fields.greeting, name, number, code)}</p>`;
       const body = htmlFormat(templateReplace(entry.fields.body, name, number, code));
-      const footer = `<p>${templateReplace(entry.fields.footer, name, number, code)}</p>`;
+      const footer = `<p>${templateReplace(entry.fields.footer || '', name, number, code)}</p>`;
 
       sendmail({
         from: 'ess@engr.uvic.ca',
