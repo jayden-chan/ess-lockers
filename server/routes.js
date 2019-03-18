@@ -6,6 +6,9 @@ const emailer = require('./emailer.js');
 const RESET_TIMEOUT = process.env.LOCKERS_RESET_TIME || 900000;
 const SQL_TABLE = process.env.LOCKERS_SQL_TABLE || 'lockers';
 
+const EMAIL_TEMPLATES = JSON.parse(require('fs')
+  .readFileSync('./emailTemplates.json'));
+
 exports.test = (req, res) => {
   emailer.send('5c10q7pyNgCgJMW562H9G9', 'jaydencn7@gmail.com', 'Jayden Chan', '99');
   res.status(200).send('OK');
@@ -146,7 +149,7 @@ exports.code = (req, res) => {
             console.log(error);
             res.status(500).send('Database query failed');
           } else {
-            emailer.sendDeregCode(req.body.email, resetCode);
+            emailer.send(EMAIL_TEMPLATES.sendDeregCode, req.body.email, null, null, resetCode);
 
             setTimeout(() => {
               const query = sqlstring.format('UPDATE ?? SET reset_code = NULL', SQL_TABLE);
