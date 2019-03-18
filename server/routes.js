@@ -7,7 +7,7 @@ const RESET_TIMEOUT = process.env.LOCKERS_RESET_TIME || 900000;
 const SQL_TABLE = process.env.LOCKERS_SQL_TABLE || 'lockers';
 
 const EMAIL_TEMPLATES = JSON.parse(require('fs')
-  .readFileSync('server/emailTemplates.json'));
+  .readFileSync('./server/emailTemplates.json'));
 
 exports.test = (req, res) => {
   emailer.send('5c10q7pyNgCgJMW562H9G9', 'jaydencn7@gmail.com', 'Jayden Chan', '99');
@@ -78,7 +78,12 @@ exports.create = (req, res) => {
             console.log(error);
             res.status(500).send('Database query failed.');
           } else {
-            emailer.sendConfirmation(req.body.email, req.body.name, req.body.locker);
+            emailer.send(
+              EMAIL_TEMPLATES.sendConfirmation,
+              req.body.email,
+              req.body.name,
+              req.body.locker
+            );
             res.status(200).send('Locker registered successfully');
           }
         });
@@ -112,7 +117,11 @@ exports.renew = (req, res) => {
             console.log(error);
             res.status(500).send('Database query failed.');
           } else {
-            emailer.sendRenewalConf(req.body.email, results1[0].name, results1[0].number);
+            emailer.send(EMAIL_TEMPLATES.sendRenewalConf,
+              req.body.email,
+              results1[0].name,
+              results1[0].number
+            );
             res.status(200).send('Locker renewed successfully');
           }
         });
@@ -197,7 +206,11 @@ exports.confirm = (req, res) => {
             console.log(error);
             res.status(500).send('Database query failed');
           } else {
-            emailer.sendDeregConf(results1.email, results1.name, results1.number);
+            emailer.send(EMAIL_TEMPLATES.sendDeregConf,
+              results1.email,
+              results1.name,
+              results1.number
+            );
             res.status(200).send('Locker successfully deregistered');
           }
         });
