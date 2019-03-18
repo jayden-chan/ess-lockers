@@ -117,9 +117,6 @@ class Admin extends Component {
           editStatus: '',
         });
         break;
-      case 65:
-        console.log(this.state);
-        break;
       default: break;
     }
   }
