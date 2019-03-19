@@ -206,6 +206,11 @@ exports.confirm = (req, res) => {
             console.log(error);
             res.status(500).send('Database query failed');
           } else {
+            console.log(EMAIL_TEMPLATES.sendDeregConf);
+            console.log(results1.email);
+            console.log(results1.name);
+            console.log(results1.number);
+
             emailer.send(EMAIL_TEMPLATES.sendDeregConf,
               results1.email,
               results1.name,

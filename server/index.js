@@ -25,6 +25,8 @@ app.use((req, res, next) => {
   switch (req.url) {
     case '/lockersapi/summary':
     case '/lockersapi/upsert':
+    case '/lockersapi/summary/':
+    case '/lockersapi/upsert/':
       if (req.headers.authorization !== API_KEY) {
         res.status(403).send('Unauthorized');
         return;
