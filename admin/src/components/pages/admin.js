@@ -306,6 +306,26 @@ class Admin extends Component {
               the lockers maintainer.
             </p>
           </div>
+
+          <div className='jumbotron'>
+            <h2>Actions</h2>
+            <p>
+              <b>WARNING</b>: If you do not understand what these actions mean or what they
+              will do, please contact the maintainer before running them as they will have
+              irreversible effects!
+            </p>
+            <button type='button' 
+              className='btn btn-primary action-button'
+            >
+              Delete the production database
+            </button>
+            <button type='button' className='btn btn-primary action-button'>
+              Run semester reset script
+            </button>
+            <button type='button' className='btn btn-primary action-button'>
+              Kill yourself
+            </button>
+          </div>
           <h5 className='display-5'>All Lockers</h5>
 
           <form onSubmit={(e) => e.preventDefault()}>
