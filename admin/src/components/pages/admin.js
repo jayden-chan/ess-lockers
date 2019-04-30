@@ -1,11 +1,11 @@
-/* global fetch */
+/* global fetch window document */
 import React, { Component } from 'react';
 import dayjs from 'dayjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import '../../assets/css/custom.min.css';
 
-const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
+const API_KEY = 'Cpd63hSTV2MH0sGzTgOrV3Gxj4YPkMO4HwbSWX9BN1VqX3e72jYX7dFn1hpACFR1';
 const DATE_FORMAT = 'MMM D, YYYY h:mm:ss A';
 
 class Admin extends Component {
@@ -71,17 +71,17 @@ class Admin extends Component {
         email: this.state.editEmail,
         number: this.state.editingRow,
         status: this.state.editStatus,
-      })
+      }),
     })
       .then(res => {
         if (res.status === 200) {
           toast('Locker updated successfully', {
             hideProgressBar: true,
             autoClose: 3000,
-            className: "toast-container"
+            className: 'toast-container',
           });
 
-          let newAll = this.state.all;
+          const newAll = this.state.all;
           const idx = this.state.editIndex;
 
           newAll[idx].name = this.state.editName;
@@ -276,7 +276,7 @@ class Admin extends Component {
                 return this.staticRow(entry, idx);
               }
             } else {
-              return (<div></div>);
+              return <div></div>;
             }
           })}
         </tbody>
@@ -301,20 +301,20 @@ class Admin extends Component {
           <div className='jumbotron'>
             <h4 className='display-4'>Administration</h4>
             <p>
-              This page is intended to serve as a basic interface for viewing the status of
-              the lockers DB. If you need to perform more advanced actions, please contact
-              the lockers maintainer.
+              This page is intended to serve as a basic interface for viewing the status
+              of the lockers DB. If you need to perform more advanced actions, please
+              contact the lockers maintainer.
             </p>
           </div>
 
           <div className='jumbotron'>
             <h2>Actions</h2>
             <p>
-              <b>WARNING</b>: If you do not understand what these actions mean or what they
-              will do, please contact the maintainer before running them as they will have
-              irreversible effects!
+              <b>WARNING</b>: Some of these actions have irreversible effects! If you do
+              not understand what they mean or what they will do, please contact the
+              maintainer before running them!
             </p>
-            <button type='button' 
+            <button type='button'
               className='btn btn-primary action-button'
             >
               Delete the production database
@@ -322,8 +322,14 @@ class Admin extends Component {
             <button type='button' className='btn btn-primary action-button'>
               Run semester reset script
             </button>
-            <button type='button' className='btn btn-primary action-button'>
-              Kill yourself
+            <button
+              type='button'
+              className='btn btn-primary action-button'
+              onClick={() => {
+                window.open('https://app.contentful.com/spaces/ixvlauwykl2e/home', '_blank');
+              }}
+            >
+              Edit email contents
             </button>
           </div>
           <h5 className='display-5'>All Lockers</h5>

@@ -27,5 +27,4 @@ const watch_scss = gulp.series(() => {
 
 exports.watch = watch_scss;
 exports.compile = compile;
-
-// exports.default = gulp.series(watch_scss, compile);
+exports.default = watch_scss;
