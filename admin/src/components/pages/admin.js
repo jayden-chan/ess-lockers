@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import '../../assets/css/custom.min.css';
 
-const API_KEY = 'Cpd63hSTV2MH0sGzTgOrV3Gxj4YPkMO4HwbSWX9BN1VqX3e72jYX7dFn1hpACFR1';
+const API_KEY = 'LOCKERS_API_KEY_PLACEHOLDER';
 const DATE_FORMAT = 'MMM D, YYYY h:mm:ss A';
 
 class Admin extends Component {
