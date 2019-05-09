@@ -38,31 +38,6 @@ const main = async () => {
     database: 'lockers2011'
   });
 
-  console.log('Updating registration statuses...');
-  const query = sqlstring.format('UPDATE lockers SET status = ? WHERE status = ?', ['pending', 'closed']);
-  connection.query(query, (error, results, fields) => {
-    if (error) {
-      logError(error, 'Error occurred while setting locker status');
-    }
-    else {
-      console.log('Done');
-
-      const query2 = sqlstring.format('SELECT email, name FROM lockers WHERE status = ?', 'pending');
-      connection.query(query2, (error, results, fields) => {
-        if (error) {
-          logError('Error occurred while collecting entries for email list');
-        } else {
-          console.log('Sending emails. This may take a while...');
-
-          results.forEach(row => {
-            emailer.sendRenewalRequest(row.email, row.name);
-          });
-
-          console.log('Finished.');
-        }
-      });
-    }
-  });
 };
 
 main();

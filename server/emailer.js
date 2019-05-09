@@ -19,6 +19,10 @@ const htmlFormat = (text) => {
   }, '');
 };
 
+exports.getContentfulEntry = async (template) => {
+  return await contentful.getEntry(template);
+};
+
 exports.send = (template, email, name, number, code) => {
   if (process.env.NODE_ENV !== 'production') {
     console.log('Env not set to production, not sending email');
@@ -33,7 +37,7 @@ exports.send = (template, email, name, number, code) => {
       const footer = `<p>${templateReplace(entry.fields.footer || '', name, number, code)}</p>`;
 
       sendmail({
-        from: 'ess@engr.uvic.ca',
+        from: 'ESS <ess@engr.uvic.ca>',
         to: email,
         subject: entry.fields.subject,
         html: `${greeting}\n${body}\n${footer}`,
@@ -121,26 +125,41 @@ exports.sendDeregConf = (email, name, number) => {
   });
 };
 
-exports.sendRenewalRequest = (email, name) => {
+exports.sendRenewalRequest = (entry, email, name) => {
+  const greeting = `<p>${templateReplace(entry.fields.greeting, name)}</p>`;
+  const body = htmlFormat(templateReplace(entry.fields.body, name));
+  const footer = `<p>${templateReplace(entry.fields.footer || '', name)}</p>`;
+
   sendmail({
     from: 'ESS <ess@engr.uvic.ca>',
     to: email,
-    subject: '[DO-NOT-REPLY] Action Required: ESS Locker Reservation',
-    html: '<p>Hello there ' + name + ',</p>'+
-    '<p>You are receiving this email because you have a locker reservation in our system. '+
-    'As you may know, at the beginning of each term we require all existing locker reservations to be renewed. '+
-    'This is to reduce the number of abandoned/forgotten lockers and to help ensure that there are enough free '+
-    'lockers for everyone. If you would like to continue using your locker, please visit the link below:</p>'+
-    '<p>http://ess.uvic.ca/lockers/#/renew</p>'+
-    '<p>If you no longer need your locker and would like to make it available this term, please remember '+
-    'to remove your belongings and lock. Your reservation will automatically be removed if you do not renew it '+
-    'within one week. If you do not renew your locker, your lock will be cut during reading break (Feb 18-22), and you '+
-    'can retrieve your locker\'s contents from the ESS office (ELW 206). Items will be saved for a minimum '+
-    'of two weeks after which they will be disposed of. If you are unable to make this deadline '+
-    'please contact us (essbtec@uvic.ca) and we\'d be happy to hold on to your things longer.</p>'
-  }, (err, reply) => {
-    if (err) {
-      console.log('[WARNING]: Error sending emails');
-    }
+    subject: entry.fields.subject,
+    html: `${greeting}\n${body}\n${footer}`,
+  });
+};
+
+exports.sendResetSucccess = (email) => {
+  sendmail({
+    from: 'ESS <ess@engr.uvic.ca>',
+    to: email,
+    subject: '[IMPORTANT]: ESS Semester Reset Success',
+    html: `
+    <p>Hello there</p>
+
+    <p>
+      Recently you submitted a request to reset the lockers system
+      for this semester. This email is to let you know that that request
+      was successful; closed lockers have been set to pending and those with
+      pending lockers are receiving emails requesting them to renew. The emails
+      might take a few minutes to finish sending.
+    </p>
+
+    <p>
+      When you're ready, cut the locks of those with 'pending' status, then press
+      the 'set pending lockers to open' button in the admin interface. Remember that
+      you can search by status in the admin interface to make it easier to see which
+      lockers are pending.
+    </p>
+    `,
   });
 };

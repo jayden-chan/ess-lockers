@@ -90,7 +90,6 @@ exports.create = (req, res) => {
 
       } else {
         res.status(403).send('Email is already registered to a locker');
-        return;
       }
     });
   } else {
@@ -224,4 +223,53 @@ exports.confirm = (req, res) => {
   } else {
     res.status(400).send('Reset code not found in body');
   }
+};
+
+exports.reset = (req, res) => {
+  console.log('[WARN] LOCKERS SEMESTER RESET INITIATED!!!');
+  console.log('[WARN] LOCKERS SEMESTER RESET INITIATED!!!');
+  console.log('[WARN] LOCKERS SEMESTER RESET INITIATED!!!');
+  console.log('[WARN] LOCKERS SEMESTER RESET INITIATED!!!');
+  console.log('[WARN] LOCKERS SEMESTER RESET INITIATED!!!');
+
+  if (!req.body.requesterEmail) {
+    res.status(400).send('You must provide a requester email');
+    return;
+  }
+
+  console.log('Updating registration statuses...');
+  const query = sqlstring.format(
+    'UPDATE lockers SET status = ? WHERE status = ?', ['pending', 'closed']
+  );
+
+  connection.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error, '[ERROR] Error occurred while setting locker status');
+      res.status(500).send('Error occurred while setting locker status');
+    } else {
+      console.log('Done');
+
+      const query2 = sqlstring.format(
+        'SELECT email, name FROM lockers WHERE status = ?', 'pending'
+      );
+
+      connection.query(query2, async (error, results, fields) => {
+        if (error) {
+          console.log('[ERROR] Error occurred while collecting entries for email list');
+          res.status(500).send('Error occurred while collecting entries for email list');
+        } else {
+          console.log('Sending emails. This may take a while...');
+          const entry = await emailer.getContentfulEntry(EMAIL_TEMPLATES.sendRenewalRequest);
+
+          results.forEach(row => {
+            emailer.sendRenewalRequest(entry, row.email, row.name);
+          });
+
+          console.log('Finished.');
+          res.status(200).send('Emails sending in progress');
+          emailer.sendResetSucccess(req.body.requesterEmail);
+        }
+      });
+    }
+  });
 };
