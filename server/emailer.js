@@ -63,7 +63,6 @@ exports.sendConfirmation = (email, name, number) => {
     'the start of next term, you may deregister it at the following link: </p>'+
     '<p>http://ess.uvic.ca/lockers/#/deregister</p>'
   }, function(err, reply) {
-    return;
   });
 };
 
@@ -84,7 +83,6 @@ exports.sendRenewalConf = (email, name, number) => {
     'the start of next term, you may deregister it at the following link: </p>'+
     '<p>http://ess.uvic.ca/lockers/#/deregister</p>'
   }, function(err, reply) {
-    return;
   });
 };
 
@@ -103,7 +101,6 @@ exports.sendDeregCode = (email, code) => {
     '<p>Your code is: ' + code + '</p>'+
     '<p>If you did not request this you may safely ignore this email.</p>'
   }, function(err, reply) {
-    return;
   });
 };
 
@@ -121,7 +118,6 @@ exports.sendDeregConf = (email, name, number) => {
     '<p>You have successfully deregistered locker ' + number + ' in the ELW.</p>'+
     '<p>Thank you for helping to ensure there are enough available lockers.</p>'
   }, function(err, reply) {
-    return;
   });
 };
 

@@ -273,3 +273,26 @@ exports.reset = (req, res) => {
     }
   });
 };
+
+exports.openPending = (req, res) => {
+  console.log('[WARN] LOCKERS PENDING -> OPEN INITIATED!!!');
+  console.log('[WARN] LOCKERS PENDING -> OPEN INITIATED!!!');
+  console.log('[WARN] LOCKERS PENDING -> OPEN INITIATED!!!');
+  console.log('[WARN] LOCKERS PENDING -> OPEN INITIATED!!!');
+  console.log('[WARN] LOCKERS PENDING -> OPEN INITIATED!!!');
+
+  console.log('Updating registration statuses...');
+  const query = sqlstring.format(
+    'UPDATE lockers SET status = ? WHERE status = ?', ['open', 'pending']
+  );
+
+  connection.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error, '[ERROR] Error occurred while setting locker status');
+      res.status(500).send('Error occurred while setting locker status');
+    } else {
+      console.log('Done');
+      res.status(200).send('All pending lockers have been set to open');
+    }
+  });
+};

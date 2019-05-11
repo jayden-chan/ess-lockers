@@ -33,7 +33,6 @@ app.use((req, res, next) => {
     case `${ROOT_PATH}/reset/`:
       if (req.headers.authorization !== API_KEY) {
         res.status(403).send('Unauthorized');
-        return;
       } else {
         next();
       }
@@ -53,11 +52,14 @@ app.get('/lockersapi/ping', (req, res) => {
 app.get(`${ROOT_PATH}/test`, routes.test);
 app.get(`${ROOT_PATH}/available`, routes.available);
 app.get(`${ROOT_PATH}/summary`, routes.summary);
+
 app.post(`${ROOT_PATH}/upsert`, routes.upsert);
 app.post(`${ROOT_PATH}/new`, routes.create);
 app.post(`${ROOT_PATH}/renew`, routes.renew);
 app.post(`${ROOT_PATH}/deregister/code`, routes.code);
-app.post(`${ROOT_PATH}/reset`, routes.reset);
+app.post(`${ROOT_PATH}/reset/init`, routes.reset);
+app.post(`${ROOT_PATH}/reset/finish`, routes.openPending);
+
 app.delete(`${ROOT_PATH}/deregister/confirm`, routes.confirm);
 
 app.listen(PORT, () => console.log('Listening on port', PORT));
