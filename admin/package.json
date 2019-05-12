@@ -4,11 +4,11 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",
-    "dayjs": "^1.8.10",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
+    "dayjs": "^1.8.14",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.1.5",
+    "react-scripts": "^2.1.8",
     "react-toastify": "^4.5.2"
   },
   "scripts": {
@@ -33,9 +33,9 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.2",
     "gulp-changed": "^3.2.0",
-    "gulp-clean-css": "^4.0.0",
+    "gulp-clean-css": "^4.2.0",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
     "gulp-uglify": "^3.0.2"
