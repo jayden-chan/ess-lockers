@@ -322,6 +322,7 @@ class Admin extends Component {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          this.closeModal();
 
           fetch('/lockersapi/reset/init', {
             method: 'post',
