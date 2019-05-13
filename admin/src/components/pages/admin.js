@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import dayjs from 'dayjs';
 import { ToastContainer, toast } from 'react-toastify';
+import { Modal } from 'react-bootstrap';
 import 'react-toastify/dist/ReactToastify.min.css';
 import '../../assets/css/custom.min.css';
 
@@ -13,15 +14,25 @@ class Admin extends Component {
     super(props);
     this.state = {
       all: [],
+      show: false,
       searchNameString: '',
       editingRow: null,
       editName: '',
       editEmail: '',
       editStatus: '',
       editIndex: 0,
+      resetRequesterEmail: '',
+      modalContent: {
+        title: '',
+        body: '',
+        confirmation: '',
+        form: false,
+      },
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     this.handleButtonPress = this.handleButtonPress.bind(this);
   }
 
@@ -51,6 +62,14 @@ class Admin extends Component {
       .then(json => {
         this.setState({all: json});
       });
+  }
+
+  closeModal() {
+    this.setState({show: false});
+  }
+
+  openModal(modalContent) {
+    this.setState({show: true, modalContent});
   }
 
   submitWithEnter(event) {
@@ -294,6 +313,63 @@ class Admin extends Component {
     });
   }
 
+  renderModalForm(shouldRender) {
+    if (!shouldRender) {
+      return <></>;
+    }
+
+    return (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+
+          fetch('/lockersapi/reset/init', {
+            method: 'post',
+            mode: 'same-origin',
+            headers: {
+              'Authorization': API_KEY,
+              'Content-Type': 'application/json',
+            },
+            body: {
+              requesterEmail: this.state.resetRequesterEmail,
+            },
+          })
+            .then(res => {
+              if (res.status === 200) {
+                toast('Reset initiated', {
+                  hideProgressBar: true,
+                  autoClose: 3000,
+                  className: 'toast-container',
+                });
+              } else {
+                return res.text().then(text => {
+                  toast(text, {
+                    hideProgressBar: true,
+                    autoClose: 3000,
+                    className: 'toast-container',
+                  });
+                });
+              }
+            });
+        }}
+        style={{marginTop: 15}}
+        id='resetForm'
+      >
+        <div className='form-group'>
+          <input
+            type='email'
+            name='resetRequesterEmail'
+            id='resetRequesterEmail'
+            placeholder='Email'
+            className='form-control'
+            value={this.state.resetRequesterEmail}
+            onChange={this.handleChange}
+          />
+        </div>
+      </form>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -319,7 +395,27 @@ class Admin extends Component {
             >
               Delete the production database
             </button>
-            <button type='button' className='btn btn-primary action-button'>
+            <button
+              type='button'
+              className='btn btn-primary action-button'
+              onClick={() => {this.openModal({
+                title: 'WARNING!!!',
+                body: (
+                  <>
+                    Are you sure you want to run the semester reset?
+                    This will set all closed lockers to pending and send an email
+                    to the owners of the affected lockers
+
+                    <div style={{marginTop: 30}}>
+                      Please enter your email. A status update will be sent here once the
+                      reset process is finished.
+                    </div>
+                  </>
+                ),
+                confirmation: 'Yes, I\'m sure I want to run the reset.',
+                form: true,
+              })}}
+            >
               Run semester reset script
             </button>
             <button
@@ -338,9 +434,14 @@ class Admin extends Component {
             <div className='form-group'>
               <div className='form-row'>
                 <div className='form-group col-md-4'>
-                  <input type='text' name='searchNameString' id='searchNameString'
-                    placeholder='Search by name, email, or status' className='form-control'
-                    value={this.state.searchNameString} onChange={this.handleChange}
+                  <input
+                    type='text'
+                    name='searchNameString'
+                    id='searchNameString'
+                    placeholder='Search by name, email, or status'
+                    className='form-control'
+                    value={this.state.searchNameString}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
@@ -352,6 +453,28 @@ class Admin extends Component {
             {this.assembleTable(this.state.all)}
           </div>
         </div>
+
+        <Modal show={this.state.show} onHide={this.closeModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>{this.state.modalContent.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {this.state.modalContent.body}
+            {this.renderModalForm(this.state.modalContent.form)}
+          </Modal.Body>
+          <Modal.Footer>
+            <button className='btn btn-primary' onClick={this.closeModal}>
+              Close
+            </button>
+            <button
+              className="btn btn-primary"
+              type='submit'
+              form='resetForm'
+            >
+              {this.state.modalContent.confirmation}
+            </button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }

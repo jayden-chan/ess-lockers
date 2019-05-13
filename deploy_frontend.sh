@@ -1,5 +1,14 @@
 #!/bin/zsh
 
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    echo "Options:"
+    echo
+    echo "--dry-run           Build only, do not copy files to server"
+    echo "--skip-build        Upload only, do not build"
+
+    exit 0
+fi
+
 if [ $1 = "--dry-run" ]; then
 else
     echo
