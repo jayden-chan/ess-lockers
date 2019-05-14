@@ -24,7 +24,6 @@ exports.available = (req, res) => {
       res.status(200).json(results);
     }
   });
-  connection.end();
 };
 
 exports.summary = (req, res) => {
@@ -37,7 +36,6 @@ exports.summary = (req, res) => {
       res.status(200).json(results);
     }
   });
-  connection.end();
 };
 
 exports.upsert = (req, res) => {
@@ -57,7 +55,6 @@ exports.upsert = (req, res) => {
         res.status(200).send('Locker updated');
       }
     });
-    connection.end();
   } else {
     res.status(400).send('One or more data fields were not filled. Please try again.');
   }
@@ -96,7 +93,6 @@ exports.create = (req, res) => {
       }
     });
 
-    connection.end();
   } else {
     res.status(400).send('One or more data fields were not filled. Please try again.');
   }
@@ -134,7 +130,6 @@ exports.renew = (req, res) => {
       }
     });
 
-    connection.end();
   } else {
     res.status(400).send('One or more data fields were not filled. Please try again.');
   }
@@ -184,7 +179,6 @@ exports.code = (req, res) => {
       }
     });
 
-    connection.end();
   } else {
     res.status(400).send('One or more data fields were not filled. Please try again.');
   }
@@ -230,7 +224,6 @@ exports.confirm = (req, res) => {
       }
     });
 
-    connection.end();
   } else {
     res.status(400).send('Reset code not found in body');
   }
@@ -284,7 +277,6 @@ exports.reset = (req, res) => {
     }
   });
 
-  connection.end();
 };
 
 exports.openPending = (req, res) => {
@@ -309,5 +301,4 @@ exports.openPending = (req, res) => {
     }
   });
 
-  connection.end();
 };
