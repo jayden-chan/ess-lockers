@@ -213,14 +213,14 @@ exports.confirm = (req, res) => {
             res.status(500).send('Database query failed');
           } else {
             console.log(EMAIL_TEMPLATES.sendDeregConf);
-            console.log(results1.email);
-            console.log(results1.name);
-            console.log(results1.number);
+            console.log(results2.email);
+            console.log(results2.name);
+            console.log(results2.number);
 
             emailer.send(EMAIL_TEMPLATES.sendDeregConf,
-              results1.email,
-              results1.name,
-              results1.number
+              results2.email,
+              results2.name,
+              results2.number
             );
             res.status(200).send('Locker successfully deregistered');
           }
