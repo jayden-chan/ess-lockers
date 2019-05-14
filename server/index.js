@@ -11,15 +11,17 @@ const API_KEY = process.env.LOCKERS_API_KEY || 'no_key';
 
 const ROOT_PATH = '/lockersapi';
 
+const sqlPool = mysql.createPool({
+  connectionLimit: 100,
+  host: 'localhost',
+  user: SQL_USER,
+  password: SQL_PASSWORD,
+  database: 'lockers2011',
+});
+
 app.use((req, res, next) => {
   // Create a connection to the SQL server
-  global.connection = mysql.createPool({
-    connectionLimit: 100,
-    host: 'localhost',
-    user: SQL_USER,
-    password: SQL_PASSWORD,
-    database: 'lockers2011',
-  });
+  global.connection = sqlPool;
   next();
 });
 
