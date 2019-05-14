@@ -331,9 +331,9 @@ class Admin extends Component {
               'Authorization': API_KEY,
               'Content-Type': 'application/json',
             },
-            body: {
+            body: JSON.stringify({
               requesterEmail: this.state.resetRequesterEmail,
-            },
+            }),
           })
             .then(res => {
               if (res.status === 200) {
