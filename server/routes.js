@@ -109,7 +109,7 @@ exports.renew = (req, res) => {
         res.status(500).send('Database query failed.');
       } else if (results1.length === 1) {
 
-        const query2 = sqlstring.format('UPDATE ?? SET status = ? WHERE status = ? AND email = ?',
+        const query2 = sqlstring.format('UPDATE ?? SET status = ?, submitted = NOW() WHERE status = ? AND email = ?',
           [SQL_TABLE, 'closed', 'pending', req.body.email]);
 
         connection.query(query2, (error, results2, fields) => {
@@ -162,7 +162,11 @@ exports.code = (req, res) => {
             emailer.send(EMAIL_TEMPLATES.sendDeregCode, req.body.email, null, null, resetCode);
 
             setTimeout(() => {
-              const query = sqlstring.format('UPDATE ?? SET reset_code = NULL', SQL_TABLE);
+              const query = sqlstring.format(
+                'UPDATE ?? SET reset_code = NULL WHERE number = ? AND email = ?',
+                [SQL_TABLE, req.body.number, req.body.email]
+              );
+
               connection.query(query, (error, results, fields) => {
                 if (error) {
                   console.log(error);
@@ -199,8 +203,8 @@ exports.confirm = (req, res) => {
       } else {
 
         const query2 = sqlstring.format(
-          'UPDATE ?? SET reset_code = ?, status = ? WHERE reset_code = ?',
-          [SQL_TABLE, null, 'open', req.body.code]
+          'UPDATE ?? SET reset_code = NULL, status = ?, submitted = NOW() WHERE reset_code = ?',
+          [SQL_TABLE, 'open', req.body.code]
         );
 
         connection.query(query2, (error, results2, fields) => {
