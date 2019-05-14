@@ -14,6 +14,7 @@ const ROOT_PATH = '/lockersapi';
 app.use((req, res, next) => {
   // Create a connection to the SQL server
   global.connection = mysql.createPool({
+    connectionLimit: 100,
     host: 'localhost',
     user: SQL_USER,
     password: SQL_PASSWORD,
