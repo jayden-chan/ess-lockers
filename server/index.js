@@ -29,8 +29,10 @@ app.use((req, res, next) => {
     case `${ROOT_PATH}/summary/`:
     case `${ROOT_PATH}/upsert`:
     case `${ROOT_PATH}/upsert/`:
-    case `${ROOT_PATH}/reset`:
-    case `${ROOT_PATH}/reset/`:
+    case `${ROOT_PATH}/reset/init`:
+    case `${ROOT_PATH}/reset/init/`:
+    case `${ROOT_PATH}/reset/finish`:
+    case `${ROOT_PATH}/reset/finish/`:
       if (req.headers.authorization !== API_KEY) {
         res.status(403).send('Unauthorized');
       } else {
