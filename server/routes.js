@@ -24,6 +24,7 @@ exports.available = (req, res) => {
       res.status(200).json(results);
     }
   });
+  connection.close();
 };
 
 exports.summary = (req, res) => {
@@ -36,6 +37,7 @@ exports.summary = (req, res) => {
       res.status(200).json(results);
     }
   });
+  connection.close();
 };
 
 exports.upsert = (req, res) => {
@@ -55,6 +57,7 @@ exports.upsert = (req, res) => {
         res.status(200).send('Locker updated');
       }
     });
+    connection.close();
   } else {
     res.status(400).send('One or more data fields were not filled. Please try again.');
   }
@@ -92,6 +95,8 @@ exports.create = (req, res) => {
         res.status(403).send('Email is already registered to a locker');
       }
     });
+
+    connection.close();
   } else {
     res.status(400).send('One or more data fields were not filled. Please try again.');
   }
@@ -128,6 +133,8 @@ exports.renew = (req, res) => {
         res.status(400).send('Specified locker is not up for renewal at this time.');
       }
     });
+
+    connection.close();
   } else {
     res.status(400).send('One or more data fields were not filled. Please try again.');
   }
@@ -176,6 +183,8 @@ exports.code = (req, res) => {
         res.status(400).send('Locker does not belong to this email.');
       }
     });
+
+    connection.close();
   } else {
     res.status(400).send('One or more data fields were not filled. Please try again.');
   }
@@ -220,6 +229,8 @@ exports.confirm = (req, res) => {
         });
       }
     });
+
+    connection.close();
   } else {
     res.status(400).send('Reset code not found in body');
   }
@@ -272,6 +283,8 @@ exports.reset = (req, res) => {
       });
     }
   });
+
+  connection.close();
 };
 
 exports.openPending = (req, res) => {
@@ -295,4 +308,6 @@ exports.openPending = (req, res) => {
       res.status(200).send('All pending lockers have been set to open');
     }
   });
+
+  connection.close();
 };
